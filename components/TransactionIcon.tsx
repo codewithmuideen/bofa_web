@@ -24,7 +24,7 @@ export default function TransactionIcon({ icon, merchant }: { icon: string; merc
 
   return (
     <div
-      className="h-11 w-11 rounded-full flex items-center justify-center text-sm font-bold shrink-0"
+      className="h-11 w-11 rounded-2xl flex items-center justify-center text-sm font-bold shrink-0 shadow-sm"
       style={{ background: config.bg, color: config.text }}
     >
       {config.letter}

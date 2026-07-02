@@ -57,15 +57,15 @@ function LoginOtpContent() {
 
   return (
     <div className="min-h-screen bg-[#F4F6F9] flex flex-col">
-      <div className="bg-[#1C3668] py-6 px-4 flex items-center gap-3">
-        <button onClick={() => router.back()} className="h-9 w-9 rounded-full flex items-center justify-center hover:bg-white/10 transition">
+      <div className="bg-gradient-to-r from-[#0A1628] to-[#1C3668] py-6 px-4 flex items-center gap-3 safe-top">
+        <button onClick={() => router.back()} className="h-9 w-9 rounded-full flex items-center justify-center hover:bg-white/10 active:scale-95 transition">
           <ArrowLeft size={20} className="text-white" />
         </button>
         <img src="/logo.png" alt="Bank of America" className="h-7 object-contain brightness-0 invert" />
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-start px-4 py-10">
-        <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg p-6">
+        <div className="w-full max-w-sm bg-white rounded-3xl shadow-lift p-6">
           <h2 className="text-xl font-bold text-[#1A1A2E] mb-1">Verify Your Identity</h2>
           <p className="text-sm text-[#6B7280] mb-6">
             We sent a 6-digit code to <strong className="text-[#1A1A2E]">{maskedEmail}</strong>. It expires in 10 minutes.
@@ -91,7 +91,7 @@ function LoginOtpContent() {
           <button
             onClick={() => verify(otp)}
             disabled={otp.length < 6 || loading}
-            className="mt-6 w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#152A52] transition"
+            className="mt-6 w-full py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm shadow-md disabled:opacity-50 disabled:cursor-not-allowed hover:brightness-110 active:scale-[0.98] disabled:active:scale-100 transition"
           >
             {loading ? "Verifying..." : "Verify Code"}
           </button>

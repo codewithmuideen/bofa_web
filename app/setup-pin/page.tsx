@@ -47,10 +47,10 @@ export default function SetupPinPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1C3668] flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-b from-[#0A1628] to-[#1C3668] flex flex-col items-center justify-center px-4 safe-top safe-bottom">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="h-16 w-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="h-16 w-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
             <ShieldCheck size={32} className="text-white" />
           </div>
           <h1 className="text-2xl font-bold text-white">
@@ -74,7 +74,7 @@ export default function SetupPinPage() {
 
         {error && <p className="text-center text-sm text-[#FFB3BC] mb-4">{error}</p>}
 
-        <div className="bg-white/10 rounded-3xl p-4 backdrop-blur-sm">
+        <div className="bg-white/10 rounded-3xl p-4 backdrop-blur-sm shadow-xl-navy">
           <div className="grid grid-cols-3 gap-3">
             {pad.map((k, i) => (
               k === "" ? <div key={i} /> :

@@ -40,7 +40,7 @@ export default function DepositPage() {
   return (
     <AppShell>
       <div className="animate-fade-in">
-        <div className="bg-[#1C3668] px-4 py-5">
+        <div className="bg-gradient-to-r from-[#0A1628] to-[#1C3668] px-4 py-6">
           <h1 className="text-white font-bold text-xl">Mobile Deposit</h1>
           <p className="text-white/60 text-sm mt-0.5">Deposit a check with your camera</p>
         </div>
@@ -91,7 +91,7 @@ export default function DepositPage() {
                 onChange={handleCapture}
               />
 
-              <div className="bg-white rounded-2xl shadow-card p-5 space-y-4">
+              <div className="bg-white rounded-3xl shadow-card p-5 space-y-4">
                 <h3 className="font-bold text-[#1A1A2E]">Deposit Details</h3>
 
                 <div>
@@ -127,7 +127,7 @@ export default function DepositPage() {
               <button
                 onClick={handleSubmit}
                 disabled={!preview}
-                className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
               >
                 Submit Deposit
               </button>
@@ -145,7 +145,7 @@ export default function DepositPage() {
           )}
 
           {step === "restricted" && (
-            <div className="bg-white rounded-2xl shadow-card overflow-hidden">
+            <div className="bg-white rounded-3xl shadow-card overflow-hidden">
               <div className="bg-amber-50 p-6 flex flex-col items-center text-center border-b border-amber-100">
                 <div className="h-16 w-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
                   <AlertTriangle size={30} className="text-amber-600" />

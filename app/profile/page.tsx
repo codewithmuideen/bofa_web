@@ -28,8 +28,6 @@ export default function ProfilePage() {
 
   if (!user) return null;
 
-  const bal = { checking: 4000, savings: 85000 };
-
   const handleSignOut = () => {
     signOut();
     router.replace("/login");
@@ -39,18 +37,20 @@ export default function ProfilePage() {
     <AppShell>
       <div className="p-4 sm:p-6 max-w-xl mx-auto space-y-5">
         {/* Avatar card */}
-        <div className="bg-[#1C3668] rounded-3xl p-6 text-white text-center shadow-xl-navy">
-          <div className="mx-auto h-24 w-24 rounded-full overflow-hidden border-4 border-white/25 mb-4 bg-[#E31837] flex items-center justify-center">
-            {user.avatar && !imgFailed ? (
-              <img src={user.avatar} alt={user.firstName} className="h-full w-full object-cover"
-                onError={() => setImgFailed(true)} />
-            ) : (
-              <span className="text-3xl font-bold">{user.firstName[0]}{user.lastName[0]}</span>
-            )}
+        <div className="card-premium bg-gradient-to-br from-[#0A1628] to-[#1C3668] rounded-3xl p-6 text-white text-center shadow-xl-navy relative overflow-hidden">
+          <div className="relative z-10">
+            <div className="mx-auto h-24 w-24 rounded-2xl overflow-hidden border-4 border-white/25 mb-4 bg-[#E31837] flex items-center justify-center shadow-lg">
+              {user.avatar && !imgFailed ? (
+                <img src={user.avatar} alt={user.firstName} className="h-full w-full object-cover"
+                  onError={() => setImgFailed(true)} />
+              ) : (
+                <span className="text-3xl font-bold">{user.firstName[0]}{user.lastName[0]}</span>
+              )}
+            </div>
+            <h2 className="text-xl font-bold">{user.firstName} {user.lastName}</h2>
+            <p className="text-white/60 text-sm mt-0.5">{user.userId}</p>
+            <p className="text-white/40 text-xs mt-1">Member since {formatDate(user.memberSince)}</p>
           </div>
-          <h2 className="text-xl font-bold">{user.firstName} {user.lastName}</h2>
-          <p className="text-white/60 text-sm mt-0.5">{user.userId}</p>
-          <p className="text-white/40 text-xs mt-1">Member since {formatDate(user.memberSince)}</p>
         </div>
 
         {/* Account info */}
@@ -90,7 +90,7 @@ export default function ProfilePage() {
             { icon: Mail,   label: "Paperless Settings",     desc: "Manage e-statements" },
           ].map(({ icon: Icon, label, desc }) => (
             <button key={label}
-              className="w-full flex items-center gap-4 px-5 py-4 border-b border-[#E5E7EB] last:border-0 hover:bg-[#F4F6F9] transition text-left group">
+              className="w-full flex items-center gap-4 px-5 py-4 border-b border-[#E5E7EB] last:border-0 hover:bg-[#F4F6F9] active:bg-[#EFF3FA] transition text-left group">
               <span className="h-9 w-9 rounded-xl bg-[#1C3668]/10 text-[#1C3668] flex items-center justify-center shrink-0">
                 <Icon size={16} />
               </span>
@@ -105,7 +105,7 @@ export default function ProfilePage() {
 
         {/* Sign out */}
         <button onClick={handleSignOut}
-          className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-[#E31837]/30 text-[#E31837] font-semibold text-sm hover:bg-red-50 transition">
+          className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-[#E31837]/30 text-[#E31837] font-semibold text-sm hover:bg-red-50 active:scale-[0.98] transition">
           <LogOut size={17} />
           Sign Out
         </button>

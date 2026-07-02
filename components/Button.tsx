@@ -9,13 +9,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Button({ variant = "primary", size = "md", fullWidth = false, children, className = "", ...rest }: ButtonProps) {
-  const base = "inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-60 disabled:cursor-not-allowed";
+  const base = "inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100";
 
   const variants = {
-    primary: "bg-[#1C3668] text-white hover:bg-[#152A52] focus:ring-[#1C3668]/40 shadow-sm",
+    primary: "bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white hover:brightness-110 focus:ring-[#1C3668]/40 shadow-md",
     secondary: "bg-white text-[#1C3668] border border-[#1C3668]/30 hover:bg-[#F4F6F9] focus:ring-[#1C3668]/20",
     ghost: "text-[#1C3668] hover:bg-[#F4F6F9] focus:ring-[#1C3668]/20",
-    danger: "bg-[#E31837] text-white hover:bg-[#B8122A] focus:ring-[#E31837]/40 shadow-sm",
+    danger: "bg-gradient-to-r from-[#E31837] to-[#B8122A] text-white hover:brightness-110 focus:ring-[#E31837]/40 shadow-md",
   };
 
   const sizes = {

@@ -122,13 +122,13 @@ export default function TransferPage() {
     <AppShell>
       <div className="animate-fade-in">
         {/* Header */}
-        <div className="bg-[#1C3668] px-4 py-5">
+        <div className="bg-gradient-to-r from-[#0A1628] to-[#1C3668] px-4 py-6">
           <h1 className="text-white font-bold text-xl">Transfer Money</h1>
           <p className="text-white/60 text-sm mt-0.5">Send funds securely</p>
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-[#E5E7EB] bg-white">
+        <div className="flex border-b border-[#E5E7EB] bg-white shadow-sm">
           {([["zelle", "Zelle"], ["ach", "Bank Transfer"], ["wire", "Wire"]] as [Tab, string][]).map(([t, label]) => (
             <button key={t} onClick={() => setTab(t)} className={`flex-1 py-3.5 text-sm font-semibold transition border-b-2 ${tab === t ? "border-[#E31837] text-[#1C3668]" : "border-transparent text-[#9CA3AF] hover:text-[#6B7280]"}`}>
               {label}
@@ -139,7 +139,7 @@ export default function TransferPage() {
         <div className="p-4">
           {/* Zelle Tab */}
           {tab === "zelle" && (
-            <form onSubmit={handleZelleSubmit} className="bg-white rounded-2xl shadow-card p-5 space-y-4">
+            <form onSubmit={handleZelleSubmit} className="bg-white rounded-3xl shadow-card p-5 space-y-4">
               <div className="flex items-center gap-3 mb-2">
                 <div className="h-10 w-10 bg-[#6913D8] rounded-xl flex items-center justify-center shrink-0">
                   <span className="text-white font-bold text-lg">Z</span>
@@ -165,7 +165,7 @@ export default function TransferPage() {
                 <label className={labelClass}>Memo (optional)</label>
                 <input value={zelleMemo} onChange={e => setZelleMemo(e.target.value)} placeholder="What's it for?" className={inputClass} />
               </div>
-              <button type="submit" className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] transition">
+              <button type="submit" className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition">
                 Send with Zelle
               </button>
             </form>
@@ -173,7 +173,7 @@ export default function TransferPage() {
 
           {/* ACH Tab */}
           {tab === "ach" && (
-            <form onSubmit={handleAchSubmit} className="bg-white rounded-2xl shadow-card p-5 space-y-4">
+            <form onSubmit={handleAchSubmit} className="bg-white rounded-3xl shadow-card p-5 space-y-4">
               <p className="font-bold text-[#1A1A2E]">External Bank Transfer (ACH)</p>
               <p className="text-xs text-[#6B7280] -mt-2">Transfers typically take 1–3 business days.</p>
               {achErr && <p className="text-sm text-[#E31837]">{achErr}</p>}
@@ -196,7 +196,7 @@ export default function TransferPage() {
                   <input type="number" min="0.01" step="0.01" value={achAmount} onChange={e => setAchAmount(e.target.value)} placeholder="0.00" className={`${inputClass} pl-8`} />
                 </div>
               </div>
-              <button type="submit" className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] transition">
+              <button type="submit" className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition">
                 Initiate Transfer
               </button>
             </form>
@@ -204,7 +204,7 @@ export default function TransferPage() {
 
           {/* Wire Tab */}
           {tab === "wire" && (
-            <form onSubmit={handleWireSubmit} className="bg-white rounded-2xl shadow-card p-5 space-y-4">
+            <form onSubmit={handleWireSubmit} className="bg-white rounded-3xl shadow-card p-5 space-y-4">
               <p className="font-bold text-[#1A1A2E]">Wire Transfer</p>
               <p className="text-xs text-[#6B7280] -mt-2">Same-day delivery. Fees may apply.</p>
               {wireErr && <p className="text-sm text-[#E31837]">{wireErr}</p>}
@@ -227,7 +227,7 @@ export default function TransferPage() {
                   <input type="number" min="0.01" step="0.01" value={wireAmount} onChange={e => setWireAmount(e.target.value)} placeholder="0.00" className={`${inputClass} pl-8`} />
                 </div>
               </div>
-              <button type="submit" className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] transition">
+              <button type="submit" className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition">
                 Send Wire Transfer
               </button>
             </form>

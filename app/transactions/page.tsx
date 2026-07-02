@@ -55,7 +55,7 @@ export default function TransactionsPage() {
     <AppShell>
       <div className="animate-fade-in">
         {/* Header */}
-        <div className="bg-[#1C3668] px-4 py-5">
+        <div className="bg-gradient-to-r from-[#0A1628] to-[#1C3668] px-4 py-6">
           <h1 className="text-white font-bold text-xl">Transaction History</h1>
           <p className="text-white/60 text-sm mt-0.5">All account activity</p>
         </div>
@@ -84,7 +84,7 @@ export default function TransactionsPage() {
             <button
               key={tab}
               onClick={() => setFilter(tab)}
-              className={`px-4 py-1.5 rounded-full text-sm font-semibold capitalize transition ${filter === tab ? "bg-[#1C3668] text-white" : "text-[#6B7280] hover:bg-[#F4F6F9]"}`}
+              className={`px-4 py-1.5 rounded-full text-sm font-semibold capitalize transition ${filter === tab ? "bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white shadow-sm" : "text-[#6B7280] hover:bg-[#F4F6F9]"}`}
             >
               {tab}
             </button>
@@ -102,7 +102,7 @@ export default function TransactionsPage() {
             sortedDates.map(date => (
               <div key={date}>
                 <p className="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wide mb-2 px-1">{getDateLabel(date)}</p>
-                <div className="bg-white rounded-2xl shadow-card overflow-hidden divide-y divide-[#F4F6F9]">
+                <div className="bg-white rounded-3xl shadow-card overflow-hidden divide-y divide-[#F4F6F9]">
                   {grouped[date].map(txn => (
                     <div key={txn.id} className="flex items-center gap-3 px-4 py-3.5 hover:bg-[#F9FAFC] transition">
                       <TransactionIcon icon={txn.icon} merchant={txn.merchant} />

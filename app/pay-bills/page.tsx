@@ -94,7 +94,7 @@ export default function PayBillsPage() {
   return (
     <AppShell>
       <div className="animate-fade-in">
-        <div className="bg-[#1C3668] px-4 py-5">
+        <div className="bg-gradient-to-r from-[#0A1628] to-[#1C3668] px-4 py-6">
           <h1 className="text-white font-bold text-xl">Pay Bills</h1>
           <p className="text-white/60 text-sm mt-0.5">Schedule payments to your payees</p>
         </div>
@@ -111,7 +111,7 @@ export default function PayBillsPage() {
               <button
                 key={p.id}
                 onClick={() => handlePayeeSelect(p)}
-                className="w-full flex items-center gap-4 p-4 bg-white rounded-2xl shadow-card hover:shadow-lift transition text-left"
+                className="w-full flex items-center gap-4 p-4 bg-white rounded-2xl shadow-card hover:shadow-lift active:scale-[0.98] transition text-left"
               >
                 <div className="h-12 w-12 bg-[#EFF3FA] rounded-xl flex items-center justify-center shrink-0">
                   <span className="text-[#1C3668] font-bold text-lg">{p.name[0]}</span>
@@ -128,7 +128,7 @@ export default function PayBillsPage() {
 
         {step === "form" && selectedPayee && (
           <form onSubmit={handleFormSubmit} className="p-4 space-y-4">
-            <div className="bg-white rounded-2xl shadow-card p-5 space-y-4">
+            <div className="bg-white rounded-3xl shadow-card p-5 space-y-4">
               <div className="flex items-center gap-3 pb-3 border-b border-[#F4F6F9]">
                 <div className="h-12 w-12 bg-[#EFF3FA] rounded-xl flex items-center justify-center shrink-0">
                   <span className="text-[#1C3668] font-bold text-lg">{selectedPayee.name[0]}</span>
@@ -167,7 +167,7 @@ export default function PayBillsPage() {
               <button type="button" onClick={() => setStep("list")} className="flex-1 py-3.5 rounded-xl border-2 border-[#E5E7EB] text-[#6B7280] font-semibold text-sm hover:bg-[#F4F6F9] transition">
                 Back
               </button>
-              <button type="submit" className="flex-2 flex-1 py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] transition">
+              <button type="submit" className="flex-2 flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition">
                 Review Payment
               </button>
             </div>
@@ -176,7 +176,7 @@ export default function PayBillsPage() {
 
         {step === "review" && selectedPayee && (
           <div className="p-4 space-y-4">
-            <div className="bg-white rounded-2xl shadow-card p-5 space-y-3">
+            <div className="bg-white rounded-3xl shadow-card p-5 space-y-3">
               <p className="font-bold text-[#1A1A2E] text-base">Review Payment</p>
               <div className="space-y-3 py-2">
                 {[
@@ -199,7 +199,7 @@ export default function PayBillsPage() {
               <button onClick={() => setStep("form")} className="flex-1 py-3.5 rounded-xl border-2 border-[#E5E7EB] text-[#6B7280] font-semibold text-sm hover:bg-[#F4F6F9] transition">
                 Edit
               </button>
-              <button onClick={() => setPinOpen(true)} className="flex-1 py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] transition">
+              <button onClick={() => setPinOpen(true)} className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition">
                 Confirm Payment
               </button>
             </div>

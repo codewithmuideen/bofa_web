@@ -23,12 +23,12 @@ export default function SplashPage() {
   }, [isLoading, ready, user, router]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-b from-white to-[#F4F6F9] flex flex-col items-center justify-center">
       <div
         className="flex flex-col items-center gap-8 transition-all duration-700"
         style={{ opacity: ready ? 1 : 0, transform: ready ? 'scale(1)' : 'scale(0.95)' }}
       >
-        <img src="/logo.png" alt="Bank of America" className="w-64 object-contain" />
+        <img src="/logo.png" alt="Bank of America" className="w-64 object-contain drop-shadow-sm" />
         <div className="flex gap-2">
           {[0, 1, 2].map(i => (
             <div

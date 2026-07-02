@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, X, ScanFace, Phone, MapPin } from "lucide-react";
+import { Eye, EyeOff, X, ScanFace, Phone, MapPin, User as UserIcon, Lock } from "lucide-react";
 import { verifyCredentials } from "@/lib/auth";
 
 type Modal = "none" | "faceid" | "forgot" | "enroll";
@@ -77,52 +77,56 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-[#F4F6F9] flex flex-col">
       {/* BoA header */}
-      <div className="bg-[#1C3668] py-6 flex flex-col items-center gap-2">
+      <div className="bg-gradient-to-b from-[#0A1628] to-[#1C3668] pt-10 pb-16 flex flex-col items-center gap-2 safe-top relative overflow-hidden card-premium">
         <img
           src="/logo.png"
           alt="Bank of America"
-          className="h-12 w-12 object-contain"
+          className="h-12 w-12 object-contain relative z-10"
           style={{ filter: "brightness(0) invert(1)" }}
         />
-        <span className="text-white text-xs font-semibold tracking-widest uppercase opacity-80">Bank of America</span>
+        <span className="text-white text-xs font-semibold tracking-widest uppercase opacity-80 relative z-10">Bank of America</span>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-start px-4 py-8">
-        <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg overflow-hidden">
-          <div className="px-6 pt-6 pb-2">
+      <div className="flex-1 flex flex-col items-center justify-start px-4 -mt-10">
+        <div className="w-full max-w-sm bg-white rounded-3xl shadow-lift overflow-hidden">
+          <div className="px-6 pt-7 pb-2">
             <h1 className="text-xl font-bold text-[#1A1A2E]">Sign in</h1>
             <p className="text-sm text-[#6B7280] mt-1">Bank of America Online Banking</p>
           </div>
 
           <form onSubmit={handleLogin} className="px-6 pb-6 pt-4 space-y-4">
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-[#E31837]">
+              <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-[#E31837] animate-fade-in">
                 {error}
               </div>
             )}
 
             <div>
               <label className="block text-sm font-semibold text-[#1A1A2E] mb-1.5">User ID</label>
-              <input
-                type="text"
-                value={userId}
-                onChange={e => setUserId(e.target.value)}
-                placeholder="Enter your User ID"
-                autoComplete="username"
-                className="w-full px-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-[#1A1A2E] text-sm placeholder-[#9CA3AF] focus:outline-none focus:border-[#1C3668] transition"
-              />
+              <div className="relative">
+                <UserIcon size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
+                <input
+                  type="text"
+                  value={userId}
+                  onChange={e => setUserId(e.target.value)}
+                  placeholder="Enter your User ID"
+                  autoComplete="username"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-[#1A1A2E] text-sm placeholder-[#9CA3AF] focus:outline-none focus:border-[#1C3668] focus:bg-white transition"
+                />
+              </div>
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-[#1A1A2E] mb-1.5">Password</label>
               <div className="relative">
+                <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9CA3AF]" />
                 <input
                   type={showPass ? "text" : "password"}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   autoComplete="current-password"
-                  className="w-full px-4 py-3 pr-12 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-[#1A1A2E] text-sm placeholder-[#9CA3AF] focus:outline-none focus:border-[#1C3668] transition"
+                  className="w-full pl-11 pr-12 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-[#1A1A2E] text-sm placeholder-[#9CA3AF] focus:outline-none focus:border-[#1C3668] focus:bg-white transition"
                 />
                 <button
                   type="button"
@@ -148,7 +152,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl bg-[#E31837] text-white font-bold text-sm tracking-wide hover:bg-[#B8122A] transition disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#E31837] to-[#B8122A] text-white font-bold text-sm tracking-wide shadow-md hover:shadow-lg active:scale-[0.98] transition disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
             >
               {loading ? "Verifying..." : "LOG IN"}
             </button>
@@ -164,13 +168,23 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <p className="mt-6 text-xs text-[#9CA3AF] text-center">Equal Housing Lender &bull; Member FDIC</p>
+        <div className="w-full max-w-sm mt-4 bg-white rounded-2xl shadow-card p-4 flex items-center gap-3">
+          <div className="h-9 w-9 rounded-xl bg-[#EFF3FA] flex items-center justify-center shrink-0">
+            <ScanFace size={17} className="text-[#1C3668]" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs font-bold text-[#1A1A2E]">Bank securely, anywhere</p>
+            <p className="text-[11px] text-[#6B7280]">Face ID sign-in available on this device</p>
+          </div>
+        </div>
+
+        <p className="mt-6 text-xs text-[#9CA3AF] text-center pb-8">Equal Housing Lender &bull; Member FDIC</p>
       </div>
 
       {/* Face ID button */}
       <button
         onClick={handleFaceId}
-        className="fixed bottom-8 right-6 h-14 w-14 bg-[#1C3668] rounded-2xl shadow-lg flex items-center justify-center hover:bg-[#152A52] transition active:scale-95"
+        className="fixed bottom-8 right-6 h-14 w-14 bg-gradient-to-br from-[#1C3668] to-[#0A1628] rounded-2xl shadow-lift flex items-center justify-center hover:brightness-110 transition active:scale-95"
         title="Sign in with Face ID"
       >
         <ScanFace size={26} className="text-white" />
