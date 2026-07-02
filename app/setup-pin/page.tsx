@@ -47,53 +47,51 @@ export default function SetupPinPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0A1628] to-[#1C3668] flex flex-col items-center justify-center px-4 safe-top safe-bottom">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 safe-top safe-bottom">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="h-16 w-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <ShieldCheck size={32} className="text-white" />
+          <div className="h-16 w-16 bg-[#EFF3FA] rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <ShieldCheck size={30} className="text-[#1C3668]" />
           </div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-xl font-bold text-[#1A1A2E]">
             {step === "create" ? "Create Your PIN" : "Confirm Your PIN"}
           </h1>
-          <p className="text-white/60 text-sm mt-2">
+          <p className="text-[#6B7280] text-sm mt-2">
             {step === "create"
               ? `Hi ${user?.firstName ?? "there"}, create a 4-digit PIN for quick access.`
               : "Enter your PIN again to confirm."}
           </p>
         </div>
 
-        <div className={`flex gap-4 justify-center mb-4 ${shake ? "animate-shake" : ""}`}>
+        <div className={`flex gap-4 justify-center mb-6 ${shake ? "animate-shake" : ""}`}>
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className={`h-5 w-5 rounded-full border-2 border-white/40 transition-all ${i < currentPin.length ? "bg-white scale-110 border-white" : "bg-transparent"}`}
+              className={`h-4 w-4 rounded-full border-2 border-[#D1D5DB] transition-all ${i < currentPin.length ? "bg-[#1C3668] scale-110 border-[#1C3668]" : "bg-transparent"}`}
             />
           ))}
         </div>
 
-        {error && <p className="text-center text-sm text-[#FFB3BC] mb-4">{error}</p>}
+        {error && <p className="text-center text-sm text-[#E31837] mb-4">{error}</p>}
 
-        <div className="bg-white/10 rounded-3xl p-4 backdrop-blur-sm shadow-xl-navy">
-          <div className="grid grid-cols-3 gap-3">
-            {pad.map((k, i) => (
-              k === "" ? <div key={i} /> :
-              k === "⌫" ? (
-                <button key={i} onClick={() => handleKey(k)}
-                  className="h-16 rounded-2xl flex items-center justify-center text-white/70 hover:bg-white/10 active:scale-95 transition">
-                  <Delete size={22} />
-                </button>
-              ) : (
-                <button key={i} onClick={() => handleKey(k)}
-                  className="h-16 rounded-2xl text-xl font-semibold text-white bg-white/10 hover:bg-white/20 active:scale-95 active:bg-white active:text-[#1C3668] transition">
-                  {k}
-                </button>
-              )
-            ))}
-          </div>
+        <div className="grid grid-cols-3 gap-3">
+          {pad.map((k, i) => (
+            k === "" ? <div key={i} /> :
+            k === "⌫" ? (
+              <button key={i} onClick={() => handleKey(k)}
+                className="h-16 rounded-2xl flex items-center justify-center text-[#6B7280] hover:bg-[#F4F6F9] active:scale-95 transition">
+                <Delete size={20} />
+              </button>
+            ) : (
+              <button key={i} onClick={() => handleKey(k)}
+                className="h-16 rounded-2xl text-xl font-semibold text-[#1A1A2E] bg-[#F4F6F9] hover:bg-[#E5E7EB] active:scale-95 active:bg-[#1C3668] active:text-white transition">
+                {k}
+              </button>
+            )
+          ))}
         </div>
 
-        <button onClick={() => router.replace("/dashboard")} className="mt-4 w-full py-3 text-white/50 text-sm hover:text-white/70 transition">
+        <button onClick={() => router.replace("/dashboard")} className="mt-6 w-full py-3 text-[#9CA3AF] text-sm hover:text-[#6B7280] transition">
           Skip for now
         </button>
       </div>

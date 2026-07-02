@@ -25,10 +25,13 @@ export default function SplashPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-[#F4F6F9] flex flex-col items-center justify-center">
       <div
-        className="flex flex-col items-center gap-8 transition-all duration-700"
+        className="flex flex-col items-center gap-10 transition-all duration-700"
         style={{ opacity: ready ? 1 : 0, transform: ready ? 'scale(1)' : 'scale(0.95)' }}
       >
-        <img src="/logo.png" alt="Bank of America" className="w-64 object-contain drop-shadow-sm" />
+        <div className="flex flex-col items-center gap-3">
+          <img src="/logo.png" alt="" className="h-16 w-16 object-contain drop-shadow-sm" />
+          <p className="text-[#1C3668] text-2xl font-bold tracking-tight">Bank of America</p>
+        </div>
         <div className="flex gap-2">
           {[0, 1, 2].map(i => (
             <div

@@ -104,43 +104,68 @@ export interface Transaction {
   icon: string;
 }
 
+// Deterministic PRNG (mulberry32) — same seed always produces the same sequence,
+// which keeps server-rendered and client-hydrated transaction lists identical.
+function mulberry32(seed: number) {
+  return function random() {
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+const MERCHANTS: { merchant: string; category: string; icon: string; min: number; max: number }[] = [
+  { merchant: 'Uber Eats', category: 'Delivery', icon: 'uber', min: 14, max: 55 },
+  { merchant: 'Lyft', category: 'Transport', icon: 'lyft', min: 8, max: 32 },
+  { merchant: 'Apple Store', category: 'Electronics', icon: 'apple', min: 20, max: 650 },
+  { merchant: 'Amazon', category: 'Shopping', icon: 'amazon', min: 15, max: 260 },
+  { merchant: 'Starbucks', category: 'Food & Drink', icon: 'starbucks', min: 4, max: 15 },
+  { merchant: 'Airbnb', category: 'Travel', icon: 'airbnb', min: 110, max: 420 },
+  { merchant: 'Nike Store', category: 'Shopping', icon: 'nike', min: 40, max: 170 },
+  { merchant: 'Netflix', category: 'Subscription', icon: 'netflix', min: 15.99, max: 15.99 },
+  { merchant: 'Walmart', category: 'Grocery', icon: 'walmart', min: 28, max: 135 },
+  { merchant: 'AT&T', category: 'Utilities', icon: 'att', min: 55, max: 105 },
+  { merchant: 'Spotify', category: 'Subscription', icon: 'spotify', min: 9.99, max: 9.99 },
+  { merchant: 'Target', category: 'Shopping', icon: 'target', min: 20, max: 150 },
+  { merchant: 'Whole Foods', category: 'Grocery', icon: 'wholefoods', min: 32, max: 140 },
+  { merchant: 'Gas Station', category: 'Transport', icon: 'gas', min: 28, max: 65 },
+  { merchant: 'Dropbox', category: 'Software', icon: 'dropbox', min: 9.99, max: 9.99 },
+];
+
+const HISTORY_START = new Date('2025-02-22T12:00:00');
+const HISTORY_END = new Date('2025-10-30T12:00:00');
+
+function generateTransactions(seed: number, payScale: number): Transaction[] {
+  const rand = mulberry32(seed);
+  const dayMs = 24 * 60 * 60 * 1000;
+  const totalDays = Math.round((HISTORY_END.getTime() - HISTORY_START.getTime()) / dayMs);
+  const txns: Transaction[] = [];
+  let counter = 0;
+
+  for (let d = 0; d <= totalDays; d++) {
+    const dateStr = new Date(HISTORY_START.getTime() + d * dayMs).toISOString().slice(0, 10);
+
+    if (d % 14 === 0) {
+      const amount = Math.round((2100 + rand() * 1500) * payScale * 100) / 100;
+      txns.push({ id: `t${counter++}`, date: dateStr, merchant: 'Direct Deposit', category: 'Payroll', amount, type: 'credit', icon: 'deposit' });
+    }
+
+    const hits = rand() < 0.06 ? 2 : rand() < 0.34 ? 1 : 0;
+    for (let i = 0; i < hits; i++) {
+      const m = MERCHANTS[Math.floor(rand() * MERCHANTS.length)];
+      const amount = -Math.round((m.min + rand() * (m.max - m.min)) * payScale * 100) / 100;
+      txns.push({ id: `t${counter++}`, date: dateStr, merchant: m.merchant, category: m.category, amount, type: 'debit', icon: m.icon });
+    }
+  }
+
+  return txns.reverse(); // most recent first
+}
+
 const TRANSACTIONS_MAP: Record<string, Transaction[]> = {
-  A: [
-    { id: 't1', date: '2026-06-20', merchant: 'Uber Eats', category: 'Delivery', amount: -28.60, type: 'debit', icon: 'uber' },
-    { id: 't2', date: '2026-06-20', merchant: 'Lyft', category: 'Transport', amount: -10.49, type: 'debit', icon: 'lyft' },
-    { id: 't3', date: '2026-06-20', merchant: 'Apple Store', category: 'Electronics', amount: -390.99, type: 'credit', icon: 'apple' },
-    { id: 't4', date: '2026-06-19', merchant: 'Amazon', category: 'Shopping', amount: -55.40, type: 'debit', icon: 'amazon' },
-    { id: 't5', date: '2026-06-19', merchant: 'Starbucks', category: 'Food & Drink', amount: -8.60, type: 'debit', icon: 'starbucks' },
-    { id: 't6', date: '2026-06-18', merchant: 'Airbnb', category: 'Travel', amount: -205.60, type: 'credit', icon: 'airbnb' },
-    { id: 't7', date: '2026-06-18', merchant: 'Nike Store', category: 'Shopping', amount: -149.59, type: 'debit', icon: 'nike' },
-    { id: 't8', date: '2026-06-17', merchant: 'Direct Deposit', category: 'Payroll', amount: +2850.00, type: 'debit', icon: 'deposit' },
-    { id: 't9', date: '2026-06-17', merchant: 'Netflix', category: 'Subscription', amount: -15.99, type: 'credit', icon: 'netflix' },
-    { id: 't10', date: '2026-06-16', merchant: 'Walmart', category: 'Grocery', amount: -67.43, type: 'debit', icon: 'walmart' },
-  ],
-  B: [
-    { id: 't1', date: '2026-06-20', merchant: 'Apple Store', category: 'Electronics', amount: -390.99, type: 'credit', icon: 'apple' },
-    { id: 't2', date: '2026-06-20', merchant: 'Starbucks', category: 'Food & Drink', amount: -8.60, type: 'debit', icon: 'starbucks' },
-    { id: 't3', date: '2026-06-19', merchant: 'Bank of America', category: 'Transfer', amount: -10.99, type: 'debit', icon: 'bofa' },
-    { id: 't4', date: '2026-06-19', merchant: 'Amazon', category: 'Shopping', amount: -390.99, type: 'credit', icon: 'amazon' },
-    { id: 't5', date: '2026-06-18', merchant: 'Airbnb', category: 'Travel', amount: -205.60, type: 'debit', icon: 'airbnb' },
-    { id: 't6', date: '2026-06-17', merchant: 'Direct Deposit', category: 'Payroll', amount: +5500.00, type: 'debit', icon: 'deposit' },
-    { id: 't7', date: '2026-06-17', merchant: 'AT&T', category: 'Utilities', amount: -16.00, type: 'debit', icon: 'att' },
-    { id: 't8', date: '2026-06-16', merchant: 'Spotify', category: 'Subscription', amount: -9.99, type: 'credit', icon: 'spotify' },
-    { id: 't9', date: '2026-06-15', merchant: 'Target', category: 'Shopping', amount: -124.50, type: 'debit', icon: 'target' },
-    { id: 't10', date: '2026-06-14', merchant: 'Whole Foods', category: 'Grocery', amount: -89.20, type: 'debit', icon: 'wholefoods' },
-  ],
-  C: [
-    { id: 't1', date: '2026-06-20', merchant: 'Apple', category: 'Electronics', amount: -799.00, type: 'credit', icon: 'apple' },
-    { id: 't2', date: '2026-06-19', merchant: 'New Balance', category: 'Fashion', amount: -87.00, type: 'debit', icon: 'newbalance' },
-    { id: 't3', date: '2026-06-18', merchant: 'Spotify', category: 'Subscription', amount: -45.00, type: 'credit', icon: 'spotify' },
-    { id: 't4', date: '2026-06-17', merchant: 'Dropbox', category: 'Software', amount: +23.80, type: 'debit', icon: 'dropbox' },
-    { id: 't5', date: '2026-06-16', merchant: 'Uber Eats', category: 'Delivery', amount: -34.50, type: 'debit', icon: 'uber' },
-    { id: 't6', date: '2026-06-15', merchant: 'Direct Deposit', category: 'Payroll', amount: +6200.00, type: 'debit', icon: 'deposit' },
-    { id: 't7', date: '2026-06-14', merchant: 'Amazon', category: 'Shopping', amount: -230.00, type: 'credit', icon: 'amazon' },
-    { id: 't8', date: '2026-06-13', merchant: 'Starbucks', category: 'Food & Drink', amount: -12.40, type: 'debit', icon: 'starbucks' },
-    { id: 't9', date: '2026-06-12', merchant: 'Netflix', category: 'Subscription', amount: -15.99, type: 'credit', icon: 'netflix' },
-    { id: 't10', date: '2026-06-11', merchant: 'Gas Station', category: 'Transport', amount: -68.00, type: 'debit', icon: 'gas' },
-  ],
+  A: generateTransactions(19100221, 1),
+  B: generateTransactions(19100222, 1.3),
+  C: generateTransactions(19100223, 1.6),
 };
 
 export function getTransactions(key: string): Transaction[] {

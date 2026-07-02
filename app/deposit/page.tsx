@@ -40,7 +40,7 @@ export default function DepositPage() {
   return (
     <AppShell>
       <div className="animate-fade-in">
-        <div className="bg-gradient-to-r from-[#0A1628] to-[#1C3668] px-4 py-6">
+        <div className="bg-[#1C3668] px-4 py-6">
           <h1 className="text-white font-bold text-xl">Mobile Deposit</h1>
           <p className="text-white/60 text-sm mt-0.5">Deposit a check with your camera</p>
         </div>
@@ -127,7 +127,7 @@ export default function DepositPage() {
               <button
                 onClick={handleSubmit}
                 disabled={!preview}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+                className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
               >
                 Submit Deposit
               </button>

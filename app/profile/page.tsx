@@ -1,11 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { User, Shield, Bell, Phone, Mail, LogOut, ChevronRight, Copy, CheckCircle2 } from "lucide-react";
+import { User, Shield, Bell, Phone, Mail, LogOut, ChevronRight, Copy, CheckCircle2, Camera } from "lucide-react";
 import AppShell from "@/components/AppShell";
 import { useAuth } from "@/lib/auth";
 import { formatDate } from "@/lib/data";
+
+function resizeImageToDataUrl(file: File, maxSize = 256): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new window.Image();
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("read failed"));
+    reader.onload = () => {
+      img.onerror = () => reject(new Error("decode failed"));
+      img.onload = () => {
+        const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+        const w = Math.round(img.width * scale);
+        const h = Math.round(img.height * scale);
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) { reject(new Error("no canvas context")); return; }
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL("image/jpeg", 0.85));
+      };
+      img.src = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 function CopyButton({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);
@@ -23,8 +48,10 @@ function CopyButton({ value }: { value: string }) {
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, signOut } = useAuth();
+  const { user, signOut, updateAvatar } = useAuth();
   const [imgFailed, setImgFailed] = useState(false);
+  const [photoErr, setPhotoErr] = useState("");
+  const fileRef = useRef<HTMLInputElement>(null);
 
   if (!user) return null;
 
@@ -33,20 +60,48 @@ export default function ProfilePage() {
     router.replace("/login");
   };
 
+  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { setPhotoErr("Please choose an image file."); return; }
+    if (file.size > 8 * 1024 * 1024) { setPhotoErr("Image must be smaller than 8MB."); return; }
+    try {
+      setPhotoErr("");
+      const dataUrl = await resizeImageToDataUrl(file);
+      updateAvatar(dataUrl);
+      setImgFailed(false);
+    } catch {
+      setPhotoErr("Couldn't process that image. Try a different photo.");
+    } finally {
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
   return (
     <AppShell>
       <div className="p-4 sm:p-6 max-w-xl mx-auto space-y-5">
         {/* Avatar card */}
-        <div className="card-premium bg-gradient-to-br from-[#0A1628] to-[#1C3668] rounded-3xl p-6 text-white text-center shadow-xl-navy relative overflow-hidden">
+        <div className="card-premium bg-[#1C3668] rounded-3xl p-6 text-white text-center shadow-xl-navy relative overflow-hidden">
           <div className="relative z-10">
-            <div className="mx-auto h-24 w-24 rounded-2xl overflow-hidden border-4 border-white/25 mb-4 bg-[#E31837] flex items-center justify-center shadow-lg">
-              {user.avatar && !imgFailed ? (
-                <img src={user.avatar} alt={user.firstName} className="h-full w-full object-cover"
-                  onError={() => setImgFailed(true)} />
-              ) : (
-                <span className="text-3xl font-bold">{user.firstName[0]}{user.lastName[0]}</span>
-              )}
+            <div className="relative mx-auto h-24 w-24 mb-4">
+              <div className="h-24 w-24 rounded-2xl overflow-hidden border-4 border-white/25 bg-[#E31837] flex items-center justify-center shadow-lg">
+                {user.avatar && !imgFailed ? (
+                  <img src={user.avatar} alt={user.firstName} className="h-full w-full object-cover"
+                    onError={() => setImgFailed(true)} />
+                ) : (
+                  <span className="text-3xl font-bold">{user.firstName[0]}{user.lastName[0]}</span>
+                )}
+              </div>
+              <button
+                onClick={() => fileRef.current?.click()}
+                className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full bg-white text-[#1C3668] shadow-lg flex items-center justify-center hover:bg-[#F4F6F9] active:scale-95 transition"
+                title="Change photo"
+              >
+                <Camera size={15} />
+              </button>
+              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoSelect} />
             </div>
+            {photoErr && <p className="text-[#FFB3BC] text-xs mb-2">{photoErr}</p>}
             <h2 className="text-xl font-bold">{user.firstName} {user.lastName}</h2>
             <p className="text-white/60 text-sm mt-0.5">{user.userId}</p>
             <p className="text-white/40 text-xs mt-1">Member since {formatDate(user.memberSince)}</p>

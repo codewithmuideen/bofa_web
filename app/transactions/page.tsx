@@ -1,11 +1,59 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Search, X } from "lucide-react";
+import { Search, X, Download } from "lucide-react";
 import AppShell from "@/components/AppShell";
 import TransactionIcon from "@/components/TransactionIcon";
 import { useAuth } from "@/lib/auth";
-import { getTransactions, formatCurrency, formatDate, Transaction } from "@/lib/data";
+import { getTransactions, formatCurrency, formatDate, Transaction, User } from "@/lib/data";
+
+async function downloadStatementPdf(user: User, txns: Transaction[]) {
+  const { jsPDF } = await import("jspdf");
+  const doc = new jsPDF();
+  const sorted = txns.slice().sort((a, b) => a.date.localeCompare(b.date));
+  const periodStart = sorted[0]?.date ? formatDate(sorted[0].date) : "—";
+  const periodEnd = sorted[sorted.length - 1]?.date ? formatDate(sorted[sorted.length - 1].date) : "—";
+
+  doc.setFontSize(16);
+  doc.setTextColor(28, 54, 104);
+  doc.text("Bank of America", 14, 18);
+  doc.setFontSize(10);
+  doc.setTextColor(90, 90, 90);
+  doc.text("Account Statement", 14, 25);
+
+  doc.setFontSize(9);
+  doc.setTextColor(30, 30, 30);
+  doc.text(`Account holder: ${user.firstName} ${user.lastName}`, 14, 35);
+  doc.text(`Account number: ${user.accountNumber}`, 14, 40);
+  doc.text(`Statement period: ${periodStart} - ${periodEnd}`, 14, 45);
+  doc.text(`Transactions: ${txns.length}`, 14, 50);
+
+  let y = 60;
+  doc.setFontSize(9);
+  doc.setTextColor(107, 114, 128);
+  doc.text("Date", 14, y);
+  doc.text("Description", 45, y);
+  doc.text("Category", 120, y);
+  doc.text("Amount", 190, y, { align: "right" });
+  y += 3;
+  doc.setDrawColor(229, 231, 235);
+  doc.line(14, y, 196, y);
+  y += 6;
+
+  doc.setTextColor(26, 26, 46);
+  for (const t of sorted.slice().reverse()) {
+    if (y > 280) { doc.addPage(); y = 20; }
+    doc.text(formatDate(t.date), 14, y);
+    doc.text(t.merchant.slice(0, 28), 45, y);
+    doc.text(t.category.slice(0, 20), 120, y);
+    doc.setTextColor(t.amount < 0 ? 26 : 5, t.amount < 0 ? 26 : 150, t.amount < 0 ? 46 : 70);
+    doc.text(`${t.amount >= 0 ? "+" : ""}${formatCurrency(t.amount)}`, 190, y, { align: "right" });
+    doc.setTextColor(26, 26, 46);
+    y += 7;
+  }
+
+  doc.save(`BofA-Statement-${user.accountNumber.replace(/\D/g, "")}.pdf`);
+}
 
 type FilterTab = "all" | "debit" | "credit";
 
@@ -33,12 +81,22 @@ export default function TransactionsPage() {
   const { user, isLoading } = useAuth();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<FilterTab>("all");
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !user) router.replace("/login");
   }, [user, isLoading, router]);
 
   if (isLoading || !user) return null;
+
+  const handleDownload = async () => {
+    setDownloading(true);
+    try {
+      await downloadStatementPdf(user, filtered);
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   const allTxns = getTransactions(user.transactionKey);
 
@@ -55,9 +113,19 @@ export default function TransactionsPage() {
     <AppShell>
       <div className="animate-fade-in">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#0A1628] to-[#1C3668] px-4 py-6">
-          <h1 className="text-white font-bold text-xl">Transaction History</h1>
-          <p className="text-white/60 text-sm mt-0.5">All account activity</p>
+        <div className="bg-[#1C3668] px-4 py-6 flex items-center justify-between gap-3">
+          <div>
+            <h1 className="text-white font-bold text-xl">Transaction History</h1>
+            <p className="text-white/60 text-sm mt-0.5">All account activity</p>
+          </div>
+          <button
+            onClick={handleDownload}
+            disabled={downloading || filtered.length === 0}
+            className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3 py-2 rounded-xl transition disabled:opacity-50 shrink-0"
+          >
+            <Download size={14} />
+            {downloading ? "Preparing…" : "Statement"}
+          </button>
         </div>
 
         {/* Search */}
@@ -84,7 +152,7 @@ export default function TransactionsPage() {
             <button
               key={tab}
               onClick={() => setFilter(tab)}
-              className={`px-4 py-1.5 rounded-full text-sm font-semibold capitalize transition ${filter === tab ? "bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white shadow-sm" : "text-[#6B7280] hover:bg-[#F4F6F9]"}`}
+              className={`px-4 py-1.5 rounded-full text-sm font-semibold capitalize transition ${filter === tab ? "bg-[#1C3668] text-white shadow-sm" : "text-[#6B7280] hover:bg-[#F4F6F9]"}`}
             >
               {tab}
             </button>

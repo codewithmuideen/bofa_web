@@ -122,7 +122,7 @@ export default function TransferPage() {
     <AppShell>
       <div className="animate-fade-in">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#0A1628] to-[#1C3668] px-4 py-6">
+        <div className="bg-[#1C3668] px-4 py-6">
           <h1 className="text-white font-bold text-xl">Transfer Money</h1>
           <p className="text-white/60 text-sm mt-0.5">Send funds securely</p>
         </div>
@@ -165,7 +165,7 @@ export default function TransferPage() {
                 <label className={labelClass}>Memo (optional)</label>
                 <input value={zelleMemo} onChange={e => setZelleMemo(e.target.value)} placeholder="What's it for?" className={inputClass} />
               </div>
-              <button type="submit" className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition">
+              <button type="submit" className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
                 Send with Zelle
               </button>
             </form>
@@ -196,7 +196,7 @@ export default function TransferPage() {
                   <input type="number" min="0.01" step="0.01" value={achAmount} onChange={e => setAchAmount(e.target.value)} placeholder="0.00" className={`${inputClass} pl-8`} />
                 </div>
               </div>
-              <button type="submit" className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition">
+              <button type="submit" className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
                 Initiate Transfer
               </button>
             </form>
@@ -227,7 +227,7 @@ export default function TransferPage() {
                   <input type="number" min="0.01" step="0.01" value={wireAmount} onChange={e => setWireAmount(e.target.value)} placeholder="0.00" className={`${inputClass} pl-8`} />
                 </div>
               </div>
-              <button type="submit" className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition">
+              <button type="submit" className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
                 Send Wire Transfer
               </button>
             </form>

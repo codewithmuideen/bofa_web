@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, ReactNode } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { Home, ArrowLeftRight, BarChart3, User, Menu, X, Bell, LogOut, CreditCard, Receipt, Building2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 
@@ -17,6 +17,9 @@ export default function AppShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { user, signOut } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [avatarFailed, setAvatarFailed] = useState(false);
+
+  useEffect(() => { setAvatarFailed(false); }, [user?.id]);
 
   const handleSignOut = () => {
     signOut();
@@ -26,7 +29,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-[#F4F6F9] flex flex-col">
       {/* Top header */}
-      <header className="bg-gradient-to-r from-[#0A1628] to-[#1C3668] text-white px-4 py-3 flex items-center justify-between shrink-0 safe-top shadow-xl-navy">
+      <header className="bg-[#1C3668] text-white px-4 py-3 flex items-center justify-between shrink-0 safe-top shadow-sm">
         <button onClick={() => setMenuOpen(true)} className="h-10 w-10 rounded-full flex items-center justify-center hover:bg-white/10 active:scale-95 transition">
           <Menu size={21} />
         </button>
@@ -37,8 +40,8 @@ export default function AppShell({ children }: { children: ReactNode }) {
             <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-[#E31837] ring-2 ring-[#1C3668]" />
           </button>
           <button onClick={() => router.push("/profile")} className="h-9 w-9 rounded-full overflow-hidden border-2 border-white/40 shrink-0 hover:border-white/70 transition">
-            {user?.avatar ? (
-              <img src={user.avatar} alt={user.firstName} className="h-full w-full object-cover" onError={e => { (e.target as HTMLImageElement).src = ''; }} />
+            {user?.avatar && !avatarFailed ? (
+              <img src={user.avatar} alt={user.firstName} className="h-full w-full object-cover" onError={() => setAvatarFailed(true)} />
             ) : (
               <div className="h-full w-full bg-[#E31837] flex items-center justify-center text-xs font-bold">
                 {user?.firstName[0]}{user?.lastName[0]}
@@ -74,14 +77,14 @@ export default function AppShell({ children }: { children: ReactNode }) {
         <div className="fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px] animate-fade-in" onClick={() => setMenuOpen(false)} />
           <div className="relative w-[19rem] max-w-[85vw] bg-white h-full shadow-2xl flex flex-col">
-            <div className="bg-gradient-to-br from-[#0A1628] to-[#1C3668] px-6 pt-8 pb-8 relative overflow-hidden card-premium">
+            <div className="bg-[#1C3668] px-6 pt-8 pb-8 relative overflow-hidden">
               <button onClick={() => setMenuOpen(false)} className="absolute top-4 right-4 h-8 w-8 rounded-full flex items-center justify-center hover:bg-white/10 z-10">
                 <X size={18} className="text-white" />
               </button>
               <div className="flex items-center gap-3 mt-4 relative z-10">
                 <div className="h-16 w-16 rounded-2xl overflow-hidden border-2 border-white/25 shrink-0 shadow-lg">
-                  {user?.avatar ? (
-                    <img src={user.avatar} className="h-full w-full object-cover" alt={user.firstName} onError={e => { (e.target as HTMLImageElement).style.display='none'; }} />
+                  {user?.avatar && !avatarFailed ? (
+                    <img src={user.avatar} className="h-full w-full object-cover" alt={user.firstName} onError={() => setAvatarFailed(true)} />
                   ) : (
                     <div className="h-full w-full bg-[#E31837] flex items-center justify-center text-lg font-bold text-white">
                       {user?.firstName[0]}{user?.lastName[0]}

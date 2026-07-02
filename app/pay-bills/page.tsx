@@ -94,7 +94,7 @@ export default function PayBillsPage() {
   return (
     <AppShell>
       <div className="animate-fade-in">
-        <div className="bg-gradient-to-r from-[#0A1628] to-[#1C3668] px-4 py-6">
+        <div className="bg-[#1C3668] px-4 py-6">
           <h1 className="text-white font-bold text-xl">Pay Bills</h1>
           <p className="text-white/60 text-sm mt-0.5">Schedule payments to your payees</p>
         </div>
@@ -167,7 +167,7 @@ export default function PayBillsPage() {
               <button type="button" onClick={() => setStep("list")} className="flex-1 py-3.5 rounded-xl border-2 border-[#E5E7EB] text-[#6B7280] font-semibold text-sm hover:bg-[#F4F6F9] transition">
                 Back
               </button>
-              <button type="submit" className="flex-2 flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition">
+              <button type="submit" className="flex-2 flex-1 py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
                 Review Payment
               </button>
             </div>
@@ -199,7 +199,7 @@ export default function PayBillsPage() {
               <button onClick={() => setStep("form")} className="flex-1 py-3.5 rounded-xl border-2 border-[#E5E7EB] text-[#6B7280] font-semibold text-sm hover:bg-[#F4F6F9] transition">
                 Edit
               </button>
-              <button onClick={() => setPinOpen(true)} className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#1C3668] to-[#152A52] text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition">
+              <button onClick={() => setPinOpen(true)} className="flex-1 py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
                 Confirm Payment
               </button>
             </div>

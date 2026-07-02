@@ -60,7 +60,7 @@ body {
 .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 
-/* Premium account-card surface: base gradient + diagonal shine + faint ring pattern */
+/* Subtle top-sheen for colored surfaces — kept understated, no decorative artifacts */
 .card-premium {
   position: relative;
   isolation: isolate;
@@ -70,21 +70,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(120% 90% at 100% 0%, rgba(255,255,255,0.16) 0%, transparent 55%),
-    linear-gradient(115deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0) 30%);
-  pointer-events: none;
-}
-.card-premium::after {
-  content: "";
-  position: absolute;
-  right: -30%;
-  top: -60%;
-  width: 220px;
-  height: 220px;
-  border-radius: 9999px;
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 0 0 40px rgba(255,255,255,0.03);
+  background: linear-gradient(160deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 40%);
   pointer-events: none;
 }
 

@@ -6,6 +6,7 @@ interface AuthContextValue {
   user: User | null;
   signInById: (id: string) => void;
   signOut: () => void;
+  updateAvatar: (dataUrl: string) => void;
   isLoading: boolean;
 }
 
@@ -13,10 +14,20 @@ const AuthContext = createContext<AuthContextValue>({
   user: null,
   signInById: () => {},
   signOut: () => {},
+  updateAvatar: () => {},
   isLoading: true,
 });
 
 const SESSION_KEY = "bofa_session";
+const avatarOverrideKey = (id: string) => `bofa_avatar_${id}`;
+
+function withAvatarOverride(user: User): User {
+  try {
+    const override = localStorage.getItem(avatarOverrideKey(user.id));
+    if (override) return { ...user, avatar: override };
+  } catch {}
+  return user;
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -27,7 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const stored = localStorage.getItem(SESSION_KEY);
       if (stored) {
         const found = PREDEFINED_USERS.find(u => u.id === stored);
-        if (found) setUser(found);
+        if (found) setUser(withAvatarOverride(found));
       }
     } catch {}
     setIsLoading(false);
@@ -36,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signInById = useCallback((id: string) => {
     const found = PREDEFINED_USERS.find(u => u.id === id);
     if (found) {
-      setUser(found);
+      setUser(withAvatarOverride(found));
       try { localStorage.setItem(SESSION_KEY, id); } catch {}
     }
   }, []);
@@ -46,7 +57,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try { localStorage.removeItem(SESSION_KEY); localStorage.removeItem("bofa_pin"); } catch {}
   }, []);
 
-  return <AuthContext.Provider value={{ user, signInById, signOut, isLoading }}>{children}</AuthContext.Provider>;
+  const updateAvatar = useCallback((dataUrl: string) => {
+    setUser(prev => {
+      if (!prev) return prev;
+      try { localStorage.setItem(avatarOverrideKey(prev.id), dataUrl); } catch {}
+      return { ...prev, avatar: dataUrl };
+    });
+  }, []);
+
+  return <AuthContext.Provider value={{ user, signInById, signOut, updateAvatar, isLoading }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() { return useContext(AuthContext); }
