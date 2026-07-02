@@ -77,8 +77,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-[#F4F6F9] flex flex-col">
       {/* BoA header */}
-      <div className="bg-[#1C3668] py-8 flex justify-center">
-        <img src="/logo.png" alt="Bank of America" className="h-10 object-contain brightness-0 invert" />
+      <div className="bg-[#1C3668] py-6 flex flex-col items-center gap-2">
+        <img
+          src="/logo.png"
+          alt="Bank of America"
+          className="h-12 w-12 object-contain"
+          style={{ filter: "brightness(0) invert(1)" }}
+        />
+        <span className="text-white text-xs font-semibold tracking-widest uppercase opacity-80">Bank of America</span>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-start px-4 py-8">

@@ -30,7 +30,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
         <button onClick={() => setMenuOpen(true)} className="h-9 w-9 rounded-full flex items-center justify-center hover:bg-white/10 transition">
           <Menu size={22} />
         </button>
-        <img src="/logo.png" alt="Bank of America" className="h-7 object-contain brightness-0 invert" />
+        <img src="/logo.png" alt="Bank of America" className="h-8 w-8 object-contain" style={{ filter: "brightness(0) invert(1)" }} />
         <div className="flex items-center gap-2">
           <button className="h-9 w-9 rounded-full flex items-center justify-center hover:bg-white/10 transition relative">
             <Bell size={20} />
