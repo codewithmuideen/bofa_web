@@ -63,7 +63,7 @@ export const PREDEFINED_USERS: User[] = [
     password: hashPassword('BofA2024!'),
     firstName: 'Anna',
     lastName: 'Olson',
-    email: 'frontenddev177@gmail.com',
+    email: 'codewitmui@gmail.com',
     phone: '***-***-0008',
     avatar: '/ame0.jpg',
     transactionKey: 'C',
