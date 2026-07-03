@@ -3,7 +3,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import OtpInput from "@/components/OtpInput";
-import { ArrowLeft, RefreshCw } from "lucide-react";
+import { Mail } from "lucide-react";
 
 function LoginOtpContent() {
   const router = useRouter();
@@ -56,24 +56,23 @@ function LoginOtpContent() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <div className="py-5 px-4 flex items-center gap-3 safe-top border-b border-[#E5E7EB]">
-        <button onClick={() => router.back()} className="h-9 w-9 rounded-full flex items-center justify-center hover:bg-[#F4F6F9] active:scale-95 transition -ml-2">
-          <ArrowLeft size={20} className="text-[#1C3668]" />
-        </button>
-        <img src="/logo.png" alt="" className="h-6 object-contain" />
-        <span className="text-[#1C3668] text-sm font-bold">Bank of America</span>
-      </div>
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 safe-top safe-bottom">
+      <div className="w-full max-w-sm">
+        <div className="flex justify-center mb-6">
+          <img src="/logo.png" alt="Bank of America" className="h-10 object-contain" />
+        </div>
 
-      <div className="flex-1 flex flex-col items-center justify-start px-4 py-8">
-        <div className="w-full max-w-sm">
-          <h2 className="text-xl font-bold text-[#1A1A2E] mb-1">Verify Your Identity</h2>
+        <div className="bg-white rounded-3xl shadow-card border border-[#E5E7EB] p-6 text-center">
+          <div className="h-16 w-16 rounded-full bg-red-50 mx-auto flex items-center justify-center mb-5">
+            <Mail size={26} className="text-[#E31837]" />
+          </div>
+          <h2 className="text-xl font-bold text-[#1A1A2E] mb-2">Verify your identity</h2>
           <p className="text-sm text-[#6B7280] mb-6">
-            We sent a 6-digit code to <strong className="text-[#1A1A2E]">{maskedEmail}</strong>. It expires in 10 minutes.
+            We sent a code to <strong className="text-[#1A1A2E]">{maskedEmail}</strong>. Enter it below to complete sign-on.
           </p>
 
           {devCode && (
-            <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-xl">
+            <div className="mb-5 p-3 bg-yellow-50 border border-yellow-200 rounded-xl text-left">
               <p className="text-xs text-yellow-800 font-semibold">Dev mode — email not sent</p>
               <p className="text-lg font-mono font-bold text-yellow-900 mt-1 tracking-widest">{devCode}</p>
             </div>
@@ -92,22 +91,30 @@ function LoginOtpContent() {
           <button
             onClick={() => verify(otp)}
             disabled={otp.length < 6 || loading}
-            className="mt-6 w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#152A52] active:scale-[0.98] disabled:active:scale-100 transition"
+            className="mt-6 w-full py-3.5 rounded-full bg-[#E31837] text-white font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#B8122A] active:scale-[0.98] disabled:active:scale-100 transition"
           >
             {loading ? "Verifying..." : "Verify Code"}
           </button>
 
-          <button
-            disabled={resendCooldown > 0}
-            onClick={() => { setResendCooldown(30); router.back(); }}
-            className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 text-sm text-[#1C3668] font-semibold hover:bg-[#F4F6F9] rounded-xl transition disabled:opacity-50"
-          >
-            <RefreshCw size={14} />
-            {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend Code"}
+          <p className="mt-5 text-sm text-[#6B7280]">
+            Didn&apos;t receive it?{" "}
+            <button
+              disabled={resendCooldown > 0}
+              onClick={() => { setResendCooldown(30); router.back(); }}
+              className="text-[#E31837] font-semibold hover:underline disabled:opacity-50 disabled:no-underline"
+            >
+              {resendCooldown > 0 ? `Resend code (${resendCooldown}s)` : "Resend code"}
+            </button>
+          </p>
+
+          <button onClick={() => router.back()} className="mt-3 text-sm text-[#1C3668] font-semibold hover:underline">
+            ← Back to sign on
           </button>
         </div>
 
-        <p className="mt-6 text-xs text-[#9CA3AF] text-center">Having trouble? Call 1-800-432-1000</p>
+        <p className="mt-6 text-[11px] text-[#9CA3AF] text-center leading-relaxed px-2">
+          For your security, this code expires in 10 minutes. Never share it with anyone — Bank of America will never ask for your code.
+        </p>
       </div>
     </div>
   );

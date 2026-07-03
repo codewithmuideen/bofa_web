@@ -39,14 +39,14 @@ export default function PinModal({ isOpen, title = "Enter PIN", subtitle, onSucc
   const pad = ["1","2","3","4","5","6","7","8","9","","0","⌫"];
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="w-full max-w-sm bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E7EB]">
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div className="flex items-center justify-between px-6 pt-6 pb-2">
           <div>
             <p className="text-[16px] font-bold text-[#1A1A2E]">{title}</p>
             {subtitle && <p className="text-xs text-[#6B7280] mt-0.5">{subtitle}</p>}
           </div>
-          <button onClick={onCancel} className="h-8 w-8 rounded-full hover:bg-[#F4F6F9] flex items-center justify-center">
+          <button onClick={onCancel} className="h-8 w-8 rounded-full hover:bg-[#F4F6F9] flex items-center justify-center shrink-0">
             <X size={18} className="text-[#6B7280]" />
           </button>
         </div>
@@ -59,17 +59,17 @@ export default function PinModal({ isOpen, title = "Enter PIN", subtitle, onSucc
           </div>
           {error && <p className="text-center text-xs text-[#E31837] mb-4">{error}</p>}
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-3 justify-items-center">
             {pad.map((k, i) => (
               k === "" ? <div key={i} /> :
               k === "⌫" ? (
                 <button key={i} onClick={() => setPin(p => p.slice(0,-1))}
-                  className="h-14 rounded-2xl flex items-center justify-center text-[#6B7280] hover:bg-[#F4F6F9] active:scale-95 transition">
+                  className="h-14 w-14 rounded-full flex items-center justify-center text-[#6B7280] hover:bg-[#F4F6F9] active:scale-95 transition">
                   <Delete size={20} />
                 </button>
               ) : (
                 <button key={i} onClick={() => setPin(p => p.length < 4 ? p + k : p)}
-                  className="h-14 rounded-2xl text-xl font-semibold text-[#1A1A2E] bg-[#F4F6F9] hover:bg-[#E5E7EB] active:scale-95 active:bg-[#1C3668] active:text-white transition">
+                  className="h-14 w-14 rounded-full text-xl font-semibold text-[#1A1A2E] bg-[#F4F6F9] border border-[#E5E7EB] hover:bg-[#EFF3FA] active:scale-95 active:bg-[#1C3668] active:text-white transition">
                   {k}
                 </button>
               )

@@ -96,7 +96,7 @@ export default function DepositPage() {
 
                 <div>
                   <label className="block text-xs font-semibold text-[#6B7280] mb-1">Deposit to Account</label>
-                  <div className="px-4 py-3 rounded-xl bg-[#F4F6F9] border-2 border-[#E5E7EB] text-sm text-[#1A1A2E]">
+                  <div className="px-4 py-3 rounded-2xl bg-[#F4F6F9] border-2 border-[#E5E7EB] text-sm text-[#1A1A2E]">
                     Checking — {user.accountNumber}
                   </div>
                 </div>
@@ -112,7 +112,7 @@ export default function DepositPage() {
                       value={amount}
                       onChange={e => { setAmount(e.target.value); setAmountErr(""); }}
                       placeholder="0.00"
-                      className="w-full pl-8 pr-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm focus:outline-none focus:border-[#1C3668] transition"
+                      className="w-full pl-8 pr-4 py-3 rounded-2xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm focus:outline-none focus:border-[#1C3668] focus:bg-white transition"
                     />
                   </div>
                   {amountErr && <p className="text-xs text-[#E31837] mt-1">{amountErr}</p>}
@@ -127,7 +127,7 @@ export default function DepositPage() {
               <button
                 onClick={handleSubmit}
                 disabled={!preview}
-                className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+                className="w-full py-3.5 rounded-full bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
               >
                 Submit Deposit
               </button>
@@ -157,9 +157,9 @@ export default function DepositPage() {
                 </p>
               </div>
               <div className="p-4 space-y-3">
-                <a href="tel:18004321000" className="w-full flex items-center gap-4 p-4 rounded-xl border border-[#E5E7EB] hover:bg-[#F4F6F9] transition">
-                  <div className="h-10 w-10 bg-[#EFF3FA] rounded-full flex items-center justify-center shrink-0">
-                    <Phone size={18} className="text-[#1C3668]" />
+                <a href="tel:18004321000" className="w-full flex items-center gap-4 p-4 rounded-2xl border border-[#E5E7EB] hover:border-[#E31837]/40 hover:bg-red-50/40 transition">
+                  <div className="h-11 w-11 bg-red-50 rounded-full flex items-center justify-center shrink-0">
+                    <Phone size={18} className="text-[#E31837]" />
                   </div>
                   <div className="text-left">
                     <p className="font-semibold text-[#1A1A2E] text-sm">Call 1-800-432-1000</p>
@@ -167,9 +167,9 @@ export default function DepositPage() {
                   </div>
                   <ChevronRight size={16} className="text-[#9CA3AF] ml-auto" />
                 </a>
-                <button className="w-full flex items-center gap-4 p-4 rounded-xl border border-[#E5E7EB] hover:bg-[#F4F6F9] transition">
-                  <div className="h-10 w-10 bg-[#EFF3FA] rounded-full flex items-center justify-center shrink-0">
-                    <MapPin size={18} className="text-[#1C3668]" />
+                <button className="w-full flex items-center gap-4 p-4 rounded-2xl border border-[#E5E7EB] hover:border-[#E31837]/40 hover:bg-red-50/40 transition">
+                  <div className="h-11 w-11 bg-red-50 rounded-full flex items-center justify-center shrink-0">
+                    <MapPin size={18} className="text-[#E31837]" />
                   </div>
                   <div className="text-left">
                     <p className="font-semibold text-[#1A1A2E] text-sm">Visit a Branch</p>
@@ -177,7 +177,7 @@ export default function DepositPage() {
                   </div>
                   <ChevronRight size={16} className="text-[#9CA3AF] ml-auto" />
                 </button>
-                <button onClick={() => { setStep("capture"); setPreview(null); setAmount(""); }} className="w-full py-3 rounded-xl text-[#6B7280] text-sm font-semibold hover:bg-[#F4F6F9] transition">
+                <button onClick={() => { setStep("capture"); setPreview(null); setAmount(""); }} className="w-full py-3 rounded-full text-[#6B7280] text-sm font-semibold hover:bg-[#F4F6F9] transition">
                   Try Again Later
                 </button>
               </div>

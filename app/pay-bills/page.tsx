@@ -9,14 +9,12 @@ import { getPayees, Payee } from "@/lib/data";
 
 function DormantAccountScreen({ onClose }: { onClose: () => void }) {
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="w-full max-w-sm bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden">
-        <div className="flex justify-end p-4">
-          <button onClick={onClose} className="h-8 w-8 rounded-full hover:bg-[#F4F6F9] flex items-center justify-center">
-            <X size={18} className="text-[#6B7280]" />
-          </button>
-        </div>
-        <div className="px-6 pb-8 text-center">
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden relative">
+        <button onClick={onClose} className="absolute top-4 right-4 h-8 w-8 rounded-full hover:bg-[#F4F6F9] flex items-center justify-center z-10">
+          <X size={18} className="text-[#6B7280]" />
+        </button>
+        <div className="px-6 pt-8 pb-8 text-center">
           <div className="h-16 w-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <AlertTriangle size={30} className="text-amber-600" />
           </div>
@@ -26,9 +24,9 @@ function DormantAccountScreen({ onClose }: { onClose: () => void }) {
             Your account has been flagged as dormant and bill payments have been temporarily suspended. Please contact us to restore full account access.
           </p>
           <div className="space-y-3">
-            <a href="tel:18004321000" className="w-full flex items-center gap-4 p-4 rounded-xl border border-[#E5E7EB] hover:bg-[#F4F6F9] transition">
-              <div className="h-10 w-10 bg-[#EFF3FA] rounded-full flex items-center justify-center shrink-0">
-                <Phone size={18} className="text-[#1C3668]" />
+            <a href="tel:18004321000" className="w-full flex items-center gap-4 p-4 rounded-2xl border border-[#E5E7EB] hover:border-[#E31837]/40 hover:bg-red-50/40 transition">
+              <div className="h-11 w-11 bg-red-50 rounded-full flex items-center justify-center shrink-0">
+                <Phone size={18} className="text-[#E31837]" />
               </div>
               <div className="text-left">
                 <p className="font-semibold text-[#1A1A2E] text-sm">Call 1-800-432-1000</p>
@@ -36,9 +34,9 @@ function DormantAccountScreen({ onClose }: { onClose: () => void }) {
               </div>
               <ChevronRight size={16} className="text-[#9CA3AF] ml-auto" />
             </a>
-            <button className="w-full flex items-center gap-4 p-4 rounded-xl border border-[#E5E7EB] hover:bg-[#F4F6F9] transition">
-              <div className="h-10 w-10 bg-[#EFF3FA] rounded-full flex items-center justify-center shrink-0">
-                <MapPin size={18} className="text-[#1C3668]" />
+            <button className="w-full flex items-center gap-4 p-4 rounded-2xl border border-[#E5E7EB] hover:border-[#E31837]/40 hover:bg-red-50/40 transition">
+              <div className="h-11 w-11 bg-red-50 rounded-full flex items-center justify-center shrink-0">
+                <MapPin size={18} className="text-[#E31837]" />
               </div>
               <div className="text-left">
                 <p className="font-semibold text-[#1A1A2E] text-sm">Visit a Branch</p>
@@ -113,7 +111,7 @@ export default function PayBillsPage() {
                 onClick={() => handlePayeeSelect(p)}
                 className="w-full flex items-center gap-4 p-4 bg-white rounded-2xl shadow-card hover:shadow-lift active:scale-[0.98] transition text-left"
               >
-                <div className="h-12 w-12 bg-[#EFF3FA] rounded-xl flex items-center justify-center shrink-0">
+                <div className="h-12 w-12 bg-[#EFF3FA] rounded-full flex items-center justify-center shrink-0">
                   <span className="text-[#1C3668] font-bold text-lg">{p.name[0]}</span>
                 </div>
                 <div className="flex-1">
@@ -129,7 +127,7 @@ export default function PayBillsPage() {
         {step === "form" && selectedPayee && (
           <form onSubmit={handleFormSubmit} className="p-4 space-y-4">
             <div className="bg-white rounded-3xl shadow-card p-5 space-y-4">
-              <div className="flex items-center gap-3 pb-3 border-b border-[#F4F6F9]">
+              <div className="flex items-center gap-3 pb-1">
                 <div className="h-12 w-12 bg-[#EFF3FA] rounded-xl flex items-center justify-center shrink-0">
                   <span className="text-[#1C3668] font-bold text-lg">{selectedPayee.name[0]}</span>
                 </div>
@@ -146,28 +144,28 @@ export default function PayBillsPage() {
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B7280] font-semibold">$</span>
                   <input type="number" min="0.01" step="0.01" value={amount} onChange={e => setAmount(e.target.value)} placeholder="0.00"
-                    className="w-full pl-8 pr-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm focus:outline-none focus:border-[#1C3668] transition" />
+                    className="w-full pl-8 pr-4 py-3 rounded-2xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm focus:outline-none focus:border-[#1C3668] focus:bg-white transition" />
                 </div>
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-[#6B7280] mb-1">Payment Date</label>
                 <input type="date" value={date} min={today} onChange={e => setDate(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm focus:outline-none focus:border-[#1C3668] transition" />
+                  className="w-full px-4 py-3 rounded-2xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm focus:outline-none focus:border-[#1C3668] focus:bg-white transition" />
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-[#6B7280] mb-1">Memo (optional)</label>
                 <input value={memo} onChange={e => setMemo(e.target.value)} placeholder="Add a note"
-                  className="w-full px-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm focus:outline-none focus:border-[#1C3668] transition" />
+                  className="w-full px-4 py-3 rounded-2xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm focus:outline-none focus:border-[#1C3668] focus:bg-white transition" />
               </div>
             </div>
 
             <div className="flex gap-3">
-              <button type="button" onClick={() => setStep("list")} className="flex-1 py-3.5 rounded-xl border-2 border-[#E5E7EB] text-[#6B7280] font-semibold text-sm hover:bg-[#F4F6F9] transition">
+              <button type="button" onClick={() => setStep("list")} className="flex-1 py-3.5 rounded-full border-2 border-[#E5E7EB] text-[#6B7280] font-semibold text-sm hover:bg-[#F4F6F9] transition">
                 Back
               </button>
-              <button type="submit" className="flex-2 flex-1 py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
+              <button type="submit" className="flex-2 flex-1 py-3.5 rounded-full bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
                 Review Payment
               </button>
             </div>
@@ -196,10 +194,10 @@ export default function PayBillsPage() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setStep("form")} className="flex-1 py-3.5 rounded-xl border-2 border-[#E5E7EB] text-[#6B7280] font-semibold text-sm hover:bg-[#F4F6F9] transition">
+              <button onClick={() => setStep("form")} className="flex-1 py-3.5 rounded-full border-2 border-[#E5E7EB] text-[#6B7280] font-semibold text-sm hover:bg-[#F4F6F9] transition">
                 Edit
               </button>
-              <button onClick={() => setPinOpen(true)} className="flex-1 py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
+              <button onClick={() => setPinOpen(true)} className="flex-1 py-3.5 rounded-full bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
                 Confirm Payment
               </button>
             </div>

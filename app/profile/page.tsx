@@ -84,7 +84,7 @@ export default function ProfilePage() {
         <div className="card-premium bg-[#1C3668] rounded-3xl p-6 text-white text-center shadow-xl-navy relative overflow-hidden">
           <div className="relative z-10">
             <div className="relative mx-auto h-24 w-24 mb-4">
-              <div className="h-24 w-24 rounded-2xl overflow-hidden border-4 border-white/25 bg-[#E31837] flex items-center justify-center shadow-lg">
+              <div className="h-24 w-24 rounded-full overflow-hidden border-4 border-white/25 bg-[#E31837] flex items-center justify-center shadow-lg">
                 {user.avatar && !imgFailed ? (
                   <img src={user.avatar} alt={user.firstName} className="h-full w-full object-cover"
                     onError={() => setImgFailed(true)} />
@@ -146,7 +146,7 @@ export default function ProfilePage() {
           ].map(({ icon: Icon, label, desc }) => (
             <button key={label}
               className="w-full flex items-center gap-4 px-5 py-4 border-b border-[#E5E7EB] last:border-0 hover:bg-[#F4F6F9] active:bg-[#EFF3FA] transition text-left group">
-              <span className="h-9 w-9 rounded-xl bg-[#1C3668]/10 text-[#1C3668] flex items-center justify-center shrink-0">
+              <span className="h-9 w-9 rounded-full bg-[#1C3668]/10 text-[#1C3668] flex items-center justify-center shrink-0">
                 <Icon size={16} />
               </span>
               <div className="flex-1 min-w-0">
@@ -160,7 +160,7 @@ export default function ProfilePage() {
 
         {/* Sign out */}
         <button onClick={handleSignOut}
-          className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-[#E31837]/30 text-[#E31837] font-semibold text-sm hover:bg-red-50 active:scale-[0.98] transition">
+          className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full border border-[#E31837]/30 text-[#E31837] font-semibold text-sm hover:bg-red-50 active:scale-[0.98] transition">
           <LogOut size={17} />
           Sign Out
         </button>

@@ -121,7 +121,7 @@ export default function TransactionsPage() {
           <button
             onClick={handleDownload}
             disabled={downloading || filtered.length === 0}
-            className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3 py-2 rounded-xl transition disabled:opacity-50 shrink-0"
+            className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3 py-2 rounded-full transition disabled:opacity-50 shrink-0"
           >
             <Download size={14} />
             {downloading ? "Preparing…" : "Statement"}

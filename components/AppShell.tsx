@@ -2,14 +2,22 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, ReactNode } from "react";
-import { Home, ArrowLeftRight, BarChart3, User, Menu, X, Bell, LogOut, CreditCard, Receipt, Building2 } from "lucide-react";
+import { Home, Banknote, ArrowLeftRight, BarChart3, Menu as MenuIcon, X, LogOut, Receipt, User as UserIcon, FileText } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 
 const NAV = [
   { href: "/dashboard", icon: Home, label: "Home" },
+  { href: "/deposit", icon: Banknote, label: "Deposit" },
   { href: "/transfer", icon: ArrowLeftRight, label: "Transfers" },
   { href: "/transactions", icon: BarChart3, label: "Activity" },
-  { href: "/profile", icon: User, label: "Profile" },
+];
+
+const MENU_ITEMS = [
+  { href: "/transactions", icon: FileText, label: "Transactions" },
+  { href: "/pay-bills", icon: Receipt, label: "Pay bills" },
+  { href: "/transfer", icon: ArrowLeftRight, label: "Transfer money" },
+  { href: "/deposit", icon: Banknote, label: "Deposit a check" },
+  { href: "/profile", icon: UserIcon, label: "Profile & settings" },
 ];
 
 export default function AppShell({ children }: { children: ReactNode }) {
@@ -26,30 +34,14 @@ export default function AppShell({ children }: { children: ReactNode }) {
     router.replace("/login");
   };
 
+  const handleNav = (href: string) => {
+    setMenuOpen(false);
+    router.push(href);
+  };
+
   return (
     <div className="min-h-screen bg-[#F4F6F9] flex flex-col">
-      {/* Top header */}
-      <header className="bg-[#1C3668] text-white px-4 py-3 flex items-center justify-between shrink-0 safe-top shadow-sm">
-        <button onClick={() => setMenuOpen(true)} className="h-10 w-10 rounded-full flex items-center justify-center hover:bg-white/10 active:scale-95 transition">
-          <Menu size={21} />
-        </button>
-        <img src="/logo.png" alt="Bank of America" className="h-7 object-contain" style={{ filter: "brightness(0) invert(1)" }} />
-        <div className="flex items-center gap-1.5">
-          <button className="h-10 w-10 rounded-full flex items-center justify-center hover:bg-white/10 active:scale-95 transition relative">
-            <Bell size={19} />
-            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-[#E31837] ring-2 ring-[#1C3668]" />
-          </button>
-          <button onClick={() => router.push("/profile")} className="h-9 w-9 rounded-full overflow-hidden border-2 border-white/40 shrink-0 hover:border-white/70 transition">
-            {user?.avatar && !avatarFailed ? (
-              <img src={user.avatar} alt={user.firstName} className="h-full w-full object-cover" onError={() => setAvatarFailed(true)} />
-            ) : (
-              <div className="h-full w-full bg-[#E31837] flex items-center justify-center text-xs font-bold">
-                {user?.firstName[0]}{user?.lastName[0]}
-              </div>
-            )}
-          </button>
-        </div>
-      </header>
+      <div className="h-[3px] bg-[#E31837] safe-top shrink-0" />
 
       {/* Main content */}
       <main className="flex-1 overflow-auto pb-24">{children}</main>
@@ -61,7 +53,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
             const active = pathname.startsWith(href);
             return (
               <Link key={href} href={href} className={`flex-1 flex flex-col items-center py-2.5 gap-1 transition-colors relative ${active ? "text-[#1C3668]" : "text-[#9CA3AF] hover:text-[#6B7280]"}`}>
-                <span className={`h-7 w-7 rounded-xl flex items-center justify-center transition-all ${active ? "bg-[#1C3668]/10" : ""}`}>
+                <span className={`h-7 w-7 rounded-full flex items-center justify-center transition-all ${active ? "bg-[#1C3668]/10" : ""}`}>
                   <Icon size={20} strokeWidth={active ? 2.5 : 1.8} />
                 </span>
                 <span className={`text-[10px] transition-all ${active ? "font-bold" : "font-medium"}`}>{label}</span>
@@ -69,62 +61,57 @@ export default function AppShell({ children }: { children: ReactNode }) {
               </Link>
             );
           })}
+          <button onClick={() => setMenuOpen(true)} className="flex-1 flex flex-col items-center py-2.5 gap-1 text-[#9CA3AF] hover:text-[#6B7280] transition-colors">
+            <span className="h-7 w-7 rounded-full flex items-center justify-center">
+              <MenuIcon size={20} strokeWidth={1.8} />
+            </span>
+            <span className="text-[10px] font-medium">Menu</span>
+          </button>
         </div>
       </nav>
 
-      {/* Slide-out menu */}
+      {/* Menu modal (centered, Wells-Fargo style) */}
       {menuOpen && (
-        <div className="fixed inset-0 z-50 flex">
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px] animate-fade-in" onClick={() => setMenuOpen(false)} />
-          <div className="relative w-[19rem] max-w-[85vw] bg-white h-full shadow-2xl flex flex-col">
-            <div className="bg-[#1C3668] px-6 pt-8 pb-8 relative overflow-hidden">
-              <button onClick={() => setMenuOpen(false)} className="absolute top-4 right-4 h-8 w-8 rounded-full flex items-center justify-center hover:bg-white/10 z-10">
-                <X size={18} className="text-white" />
-              </button>
-              <div className="flex items-center gap-3 mt-4 relative z-10">
-                <div className="h-16 w-16 rounded-2xl overflow-hidden border-2 border-white/25 shrink-0 shadow-lg">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50 animate-fade-in" onClick={() => setMenuOpen(false)} />
+          <div className="relative w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-[#E5E7EB]">
+              <button onClick={() => handleNav("/profile")} className="flex items-center gap-3 text-left min-w-0 group">
+                <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-[#E5E7EB] shrink-0 group-hover:border-[#1C3668]/40 transition">
                   {user?.avatar && !avatarFailed ? (
                     <img src={user.avatar} className="h-full w-full object-cover" alt={user.firstName} onError={() => setAvatarFailed(true)} />
                   ) : (
-                    <div className="h-full w-full bg-[#E31837] flex items-center justify-center text-lg font-bold text-white">
+                    <div className="h-full w-full bg-[#E31837] flex items-center justify-center text-sm font-bold text-white">
                       {user?.firstName[0]}{user?.lastName[0]}
                     </div>
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-white font-bold text-[15px] truncate">{user?.firstName} {user?.lastName}</p>
-                  <p className="text-white/50 text-xs mt-0.5">{user?.userId}</p>
-                  <span className="inline-block mt-1.5 text-[10px] font-bold uppercase tracking-wide text-white/80 bg-white/10 px-2 py-0.5 rounded-full">Preferred Rewards</span>
+                  <p className="font-bold text-[#1A1A2E] text-[15px] truncate">{user?.firstName} {user?.lastName}</p>
+                  <p className="text-[#6B7280] text-xs truncate">{user?.email}</p>
                 </div>
-              </div>
+              </button>
+              <button onClick={() => setMenuOpen(false)} className="h-8 w-8 rounded-full hover:bg-[#F4F6F9] flex items-center justify-center shrink-0">
+                <X size={18} className="text-[#6B7280]" />
+              </button>
             </div>
 
-            <div className="flex-1 py-3 overflow-auto">
-              {[
-                { href: '/dashboard', icon: Home, label: 'Home' },
-                { href: '/transfer', icon: ArrowLeftRight, label: 'Transfers' },
-                { href: '/pay-bills', icon: Receipt, label: 'Pay Bills' },
-                { href: '/deposit', icon: CreditCard, label: 'Mobile Deposit' },
-                { href: '/transactions', icon: BarChart3, label: 'Activity' },
-                { href: '/profile', icon: Building2, label: 'Profile & Settings' },
-              ].map(({ href, icon: Icon, label }) => {
-                const active = pathname.startsWith(href);
-                return (
-                  <Link key={href} href={href} onClick={() => setMenuOpen(false)}
-                    className={`flex items-center gap-3 mx-3 px-4 py-3 rounded-xl transition text-[14px] font-medium ${active ? "bg-[#1C3668]/8 text-[#1C3668] font-bold" : "text-[#1A1A2E] hover:bg-[#F4F6F9]"}`}>
-                    <span className={`h-9 w-9 rounded-xl flex items-center justify-center shrink-0 ${active ? "bg-[#1C3668] text-white" : "bg-[#EFF3FA] text-[#1C3668]"}`}>
-                      <Icon size={16} />
-                    </span>
-                    {label}
-                  </Link>
-                );
-              })}
-            </div>
-
-            <div className="border-t border-[#E5E7EB] p-4">
-              <button onClick={handleSignOut} className="w-full flex items-center gap-3 px-4 py-3 text-[#E31837] hover:bg-red-50 rounded-xl transition text-sm font-semibold active:scale-[0.98]">
-                <LogOut size={18} />
-                Sign Out
+            <div className="py-2">
+              {MENU_ITEMS.map(({ href, icon: Icon, label }) => (
+                <button key={href} onClick={() => handleNav(href)}
+                  className="w-full flex items-center gap-4 px-6 py-3 hover:bg-[#F4F6F9] transition text-left">
+                  <span className="h-10 w-10 rounded-full bg-red-50 text-[#E31837] flex items-center justify-center shrink-0">
+                    <Icon size={17} />
+                  </span>
+                  <span className="text-[15px] font-medium text-[#1A1A2E]">{label}</span>
+                </button>
+              ))}
+              <button onClick={handleSignOut}
+                className="w-full flex items-center gap-4 px-6 py-3 hover:bg-[#F4F6F9] transition text-left">
+                <span className="h-10 w-10 rounded-full bg-red-50 text-[#E31837] flex items-center justify-center shrink-0">
+                  <LogOut size={17} />
+                </span>
+                <span className="text-[15px] font-bold text-[#E31837]">Sign off</span>
               </button>
             </div>
           </div>

@@ -10,14 +10,12 @@ type Tab = "zelle" | "ach" | "wire";
 
 function DormantAccountScreen({ onClose }: { onClose: () => void }) {
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="w-full max-w-sm bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden">
-        <div className="flex justify-end p-4">
-          <button onClick={onClose} className="h-8 w-8 rounded-full hover:bg-[#F4F6F9] flex items-center justify-center">
-            <X size={18} className="text-[#6B7280]" />
-          </button>
-        </div>
-        <div className="px-6 pb-8 text-center">
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden relative">
+        <button onClick={onClose} className="absolute top-4 right-4 h-8 w-8 rounded-full hover:bg-[#F4F6F9] flex items-center justify-center z-10">
+          <X size={18} className="text-[#6B7280]" />
+        </button>
+        <div className="px-6 pt-8 pb-8 text-center">
           <div className="h-16 w-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <AlertTriangle size={30} className="text-amber-600" />
           </div>
@@ -27,9 +25,9 @@ function DormantAccountScreen({ onClose }: { onClose: () => void }) {
             Your account has been flagged as dormant and outgoing transfers have been temporarily restricted. Please contact us to reactivate your account.
           </p>
           <div className="space-y-3">
-            <a href="tel:18004321000" className="w-full flex items-center gap-4 p-4 rounded-xl border border-[#E5E7EB] hover:bg-[#F4F6F9] transition">
-              <div className="h-10 w-10 bg-[#EFF3FA] rounded-full flex items-center justify-center shrink-0">
-                <Phone size={18} className="text-[#1C3668]" />
+            <a href="tel:18004321000" className="w-full flex items-center gap-4 p-4 rounded-2xl border border-[#E5E7EB] hover:border-[#E31837]/40 hover:bg-red-50/40 transition">
+              <div className="h-11 w-11 bg-red-50 rounded-full flex items-center justify-center shrink-0">
+                <Phone size={18} className="text-[#E31837]" />
               </div>
               <div className="text-left">
                 <p className="font-semibold text-[#1A1A2E] text-sm">Call Us Now</p>
@@ -37,9 +35,9 @@ function DormantAccountScreen({ onClose }: { onClose: () => void }) {
               </div>
               <ChevronRight size={16} className="text-[#9CA3AF] ml-auto" />
             </a>
-            <button className="w-full flex items-center gap-4 p-4 rounded-xl border border-[#E5E7EB] hover:bg-[#F4F6F9] transition">
-              <div className="h-10 w-10 bg-[#EFF3FA] rounded-full flex items-center justify-center shrink-0">
-                <MapPin size={18} className="text-[#1C3668]" />
+            <button className="w-full flex items-center gap-4 p-4 rounded-2xl border border-[#E5E7EB] hover:border-[#E31837]/40 hover:bg-red-50/40 transition">
+              <div className="h-11 w-11 bg-red-50 rounded-full flex items-center justify-center shrink-0">
+                <MapPin size={18} className="text-[#E31837]" />
               </div>
               <div className="text-left">
                 <p className="font-semibold text-[#1A1A2E] text-sm">Find a Branch</p>
@@ -115,7 +113,7 @@ export default function TransferPage() {
     setPinOpen(true);
   };
 
-  const inputClass = "w-full px-4 py-3 rounded-xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm text-[#1A1A2E] placeholder-[#9CA3AF] focus:outline-none focus:border-[#1C3668] transition";
+  const inputClass = "w-full px-4 py-3 rounded-2xl border-2 border-[#E5E7EB] bg-[#F4F6F9] text-sm text-[#1A1A2E] placeholder-[#9CA3AF] focus:outline-none focus:border-[#1C3668] focus:bg-white transition";
   const labelClass = "block text-xs font-semibold text-[#6B7280] mb-1";
 
   return (
@@ -141,7 +139,7 @@ export default function TransferPage() {
           {tab === "zelle" && (
             <form onSubmit={handleZelleSubmit} className="bg-white rounded-3xl shadow-card p-5 space-y-4">
               <div className="flex items-center gap-3 mb-2">
-                <div className="h-10 w-10 bg-[#6913D8] rounded-xl flex items-center justify-center shrink-0">
+                <div className="h-10 w-10 bg-[#6913D8] rounded-full flex items-center justify-center shrink-0">
                   <span className="text-white font-bold text-lg">Z</span>
                 </div>
                 <div>
@@ -165,7 +163,7 @@ export default function TransferPage() {
                 <label className={labelClass}>Memo (optional)</label>
                 <input value={zelleMemo} onChange={e => setZelleMemo(e.target.value)} placeholder="What's it for?" className={inputClass} />
               </div>
-              <button type="submit" className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
+              <button type="submit" className="w-full py-3.5 rounded-full bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
                 Send with Zelle
               </button>
             </form>
@@ -196,7 +194,7 @@ export default function TransferPage() {
                   <input type="number" min="0.01" step="0.01" value={achAmount} onChange={e => setAchAmount(e.target.value)} placeholder="0.00" className={`${inputClass} pl-8`} />
                 </div>
               </div>
-              <button type="submit" className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
+              <button type="submit" className="w-full py-3.5 rounded-full bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
                 Initiate Transfer
               </button>
             </form>
@@ -227,7 +225,7 @@ export default function TransferPage() {
                   <input type="number" min="0.01" step="0.01" value={wireAmount} onChange={e => setWireAmount(e.target.value)} placeholder="0.00" className={`${inputClass} pl-8`} />
                 </div>
               </div>
-              <button type="submit" className="w-full py-3.5 rounded-xl bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
+              <button type="submit" className="w-full py-3.5 rounded-full bg-[#1C3668] text-white font-bold text-sm hover:bg-[#152A52] active:scale-[0.98] transition">
                 Send Wire Transfer
               </button>
             </form>
