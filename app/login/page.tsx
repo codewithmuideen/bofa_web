@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, X, ScanFace, Phone, MapPin, User as UserIcon, Lock, ShieldCheck, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, X, ScanFace, Phone, MapPin, User as UserIcon, Lock, ShieldCheck, ArrowRight, PiggyBank, Gift, Zap, Plus, Check } from "lucide-react";
 import { verifyCredentials } from "@/lib/auth";
 
 type Modal = "none" | "faceid" | "forgot" | "enroll";
@@ -92,9 +92,9 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* BoA header */}
-      <div className="flex flex-col items-center gap-2 pt-8 pb-6 safe-top">
-        <img src="/logo.png" alt="" className="h-10 w-10 object-contain" />
-        <span className="text-[#1C3668] text-sm font-bold tracking-wide">Bank of America</span>
+      <div className="flex flex-col items-center gap-0.5 pt-8 pb-6 safe-top">
+        <img src="/logo.png" alt="" className="h-16 w-16 object-contain" />
+        <span className="text-[#1C3668] text-lg font-bold tracking-wide">Bank of America</span>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-start px-4">
@@ -192,14 +192,16 @@ export default function LoginPage() {
           <p className="text-xs font-bold text-[#9CA3AF] uppercase tracking-wide mb-3">Explore our products</p>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { title: "Open a savings account", sub: "High-yield options available", emoji: "🏦" },
-              { title: "$200 bonus offer", sub: "For new checking customers", emoji: "💳" },
-              { title: "Send money with Zelle", sub: "Fast, free, secure", emoji: "💜" },
-              { title: "Open an account", sub: "Checking, savings & more", emoji: "➕" },
+              { title: "Open a savings account", sub: "High-yield options available", icon: PiggyBank, bg: "bg-amber-50", fg: "text-amber-600" },
+              { title: "$200 bonus offer", sub: "For new checking customers", icon: Gift, bg: "bg-emerald-50", fg: "text-emerald-600" },
+              { title: "Send money with Zelle", sub: "Fast, free, secure", icon: Zap, bg: "bg-purple-50", fg: "text-[#6913D8]" },
+              { title: "Open an account", sub: "Checking, savings & more", icon: Plus, bg: "bg-red-50", fg: "text-[#E31837]" },
             ].map(tile => (
-              <button key={tile.title} className="bg-[#F4F6F9] rounded-2xl p-4 text-left hover:bg-[#EFF3FA] transition">
-                <span className="text-xl">{tile.emoji}</span>
-                <p className="text-xs font-bold text-[#1A1A2E] mt-2 leading-tight">{tile.title}</p>
+              <button key={tile.title} className="bg-[#F4F6F9] rounded-2xl p-4 text-left hover:bg-[#EFF3FA] active:scale-[0.98] transition">
+                <span className={`inline-flex h-9 w-9 rounded-full items-center justify-center ${tile.bg}`}>
+                  <tile.icon size={17} className={tile.fg} />
+                </span>
+                <p className="text-xs font-bold text-[#1A1A2E] mt-2.5 leading-tight">{tile.title}</p>
                 <p className="text-[11px] text-[#6B7280] mt-1 leading-tight">{tile.sub}</p>
               </button>
             ))}
@@ -295,7 +297,7 @@ export default function LoginPage() {
               {enrollDone ? (
                 <div className="text-center py-4">
                   <div className="h-16 w-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-check-pop">
-                    <span className="text-3xl">✓</span>
+                    <Check size={30} className="text-green-600" strokeWidth={3} />
                   </div>
                   <p className="font-bold text-[#1A1A2E]">Application Submitted!</p>
                   <p className="text-sm text-[#6B7280] mt-2">We&apos;ll review your information and send enrollment details to your email within 1-2 business days.</p>

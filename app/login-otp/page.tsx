@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "@/lib/auth";
+import { useAuth, pinKey } from "@/lib/auth";
 import OtpInput from "@/components/OtpInput";
 import { Mail } from "lucide-react";
 
@@ -47,7 +47,7 @@ function LoginOtpContent() {
         return;
       }
       signInById(userInternalId);
-      const hasPinStored = typeof window !== "undefined" && !!localStorage.getItem("bofa_pin");
+      const hasPinStored = typeof window !== "undefined" && !!localStorage.getItem(pinKey(userInternalId));
       router.replace(hasPinStored ? "/dashboard" : "/setup-pin");
     } catch {
       setError("Network error. Please try again.");
@@ -59,7 +59,7 @@ function LoginOtpContent() {
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 safe-top safe-bottom">
       <div className="w-full max-w-sm">
         <div className="flex justify-center mb-6">
-          <img src="/logo.png" alt="Bank of America" className="h-10 object-contain" />
+          <img src="/logo.png" alt="Bank of America" className="h-16 object-contain" />
         </div>
 
         <div className="bg-white rounded-3xl shadow-card border border-[#E5E7EB] p-6 text-center">

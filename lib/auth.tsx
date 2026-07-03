@@ -20,6 +20,7 @@ const AuthContext = createContext<AuthContextValue>({
 
 const SESSION_KEY = "bofa_session";
 const avatarOverrideKey = (id: string) => `bofa_avatar_${id}`;
+export const pinKey = (id: string) => `bofa_pin_${id}`;
 
 function withAvatarOverride(user: User): User {
   try {
@@ -54,7 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(() => {
     setUser(null);
-    try { localStorage.removeItem(SESSION_KEY); localStorage.removeItem("bofa_pin"); } catch {}
+    try { localStorage.removeItem(SESSION_KEY); } catch {}
   }, []);
 
   const updateAvatar = useCallback((dataUrl: string) => {

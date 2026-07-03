@@ -42,9 +42,9 @@ export default function DashboardPage() {
   const txns = getTransactions(user.transactionKey).slice(0, 5);
 
   const cards = [
-    { kind: "checking" as const, bg: "#1C3668", label: "Checking Account", balance: bal.checking, masked: `•••• •••• •••• ${user.cardLast4}`, subLabel: "Expiry", subVal: user.cardExpiry },
-    { kind: "savings" as const, bg: "#0A1628", label: "Savings Account", balance: bal.savings, masked: `Account ${user.accountNumber}`, subLabel: "Type", subVal: "Savings" },
-    { kind: "rewards" as const, bg: "#E31837", label: "Cash Rewards", balance: bal.rewards, masked: "Rewards Points Balance", subLabel: "Type", subVal: "Rewards" },
+    { kind: "checking" as const, gradient: "from-[#3A5A9B] via-[#1C3668] to-[#0A1628]", label: "Checking Account", balance: bal.checking, masked: `•••• •••• •••• ${user.cardLast4}`, subLabel: "Expiry", subVal: user.cardExpiry },
+    { kind: "savings" as const, gradient: "from-[#243A5E] via-[#0F1D33] to-[#000814]", label: "Savings Account", balance: bal.savings, masked: `Account ${user.accountNumber}`, subLabel: "Type", subVal: "Savings" },
+    { kind: "rewards" as const, gradient: "from-[#FF4B63] via-[#E31837] to-[#7A0E1D]", label: "Cash Rewards", balance: bal.rewards, masked: "Rewards Points Balance", subLabel: "Type", subVal: "Rewards" },
   ];
 
   const quickActions = [
@@ -85,14 +85,20 @@ export default function DashboardPage() {
               <div
                 key={idx}
                 onClick={() => setActiveCard(idx)}
-                style={{ background: card.bg }}
-                className={`card-premium snap-center shrink-0 w-[calc(100vw-32px)] max-w-[23rem] rounded-3xl p-5 shadow-lift cursor-pointer transition-transform ${activeCard === idx ? "scale-100" : "scale-[0.97]"}`}
+                className={`card-premium snap-center shrink-0 w-[calc(100vw-32px)] max-w-[23rem] rounded-3xl p-5 shadow-lift cursor-pointer transition-transform bg-gradient-to-br ${card.gradient} ${activeCard === idx ? "scale-100" : "scale-[0.97]"}`}
               >
-                <div className="relative z-10 flex justify-between items-start mb-8">
-                  <img src="/logo.png" alt="" className="h-5 object-contain brightness-0 invert opacity-80" />
+                <div className="relative z-10 flex justify-between items-start mb-5">
+                  <img src="/logo.png" alt="" className="h-8 object-contain brightness-0 invert opacity-90" />
                   {card.kind === "checking" ? <NetworkMark type={user.cardType} /> : (
                     <span className="text-white/70 text-[10px] font-bold uppercase tracking-widest">{card.label}</span>
                   )}
+                </div>
+
+                <div className="relative z-10 mb-6 h-8 w-11 rounded-md bg-gradient-to-br from-[#F4E4B8] via-[#D8B978] to-[#9C7A3C] shadow-inner grid grid-cols-2 grid-rows-2 overflow-hidden">
+                  <div className="border-b border-r border-[#00000030]" />
+                  <div className="border-b border-[#00000030]" />
+                  <div className="border-r border-[#00000030]" />
+                  <div />
                 </div>
 
                 <div className="relative z-10">

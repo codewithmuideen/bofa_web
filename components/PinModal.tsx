@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { X, Delete } from "lucide-react";
 import { hashPassword } from "@/lib/data";
+import { useAuth, pinKey } from "@/lib/auth";
 
 interface PinModalProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ interface PinModalProps {
 }
 
 export default function PinModal({ isOpen, title = "Enter PIN", subtitle, onSuccess, onCancel }: PinModalProps) {
+  const { user } = useAuth();
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [shake, setShake] = useState(false);
@@ -22,7 +24,7 @@ export default function PinModal({ isOpen, title = "Enter PIN", subtitle, onSucc
 
   useEffect(() => {
     if (pin.length === 4) {
-      const stored = localStorage.getItem("bofa_pin");
+      const stored = user ? localStorage.getItem(pinKey(user.id)) : null;
       if (!stored || stored === hashPassword(pin)) {
         setError("");
         onSuccess();

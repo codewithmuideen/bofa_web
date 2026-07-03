@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Delete, ShieldCheck } from "lucide-react";
 import { hashPassword } from "@/lib/data";
-import { useAuth } from "@/lib/auth";
+import { useAuth, pinKey } from "@/lib/auth";
 
 type Step = "create" | "confirm";
 
@@ -39,7 +39,7 @@ export default function SetupPinPage() {
           setError("PINs do not match. Please try again.");
           setTimeout(() => { setShake(false); setConfirmPin(""); setPin(""); setStep("create"); setError(""); }, 700);
         } else {
-          localStorage.setItem("bofa_pin", hashPassword(next));
+          if (user) localStorage.setItem(pinKey(user.id), hashPassword(next));
           router.replace("/dashboard");
         }
       }
@@ -50,7 +50,7 @@ export default function SetupPinPage() {
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 safe-top safe-bottom">
       <div className="w-full max-w-sm">
         <div className="flex justify-center mb-6">
-          <img src="/logo.png" alt="Bank of America" className="h-10 object-contain" />
+          <img src="/logo.png" alt="Bank of America" className="h-16 object-contain" />
         </div>
 
         <div className="bg-white rounded-3xl shadow-card border border-[#E5E7EB] p-8">
